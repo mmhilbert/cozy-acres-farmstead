@@ -14,6 +14,21 @@ const seedDatabase = async () => {
     returning: true,
   });
 
+  await Farm.bulkCreate(farmData, {
+    individualHooks: true,
+    returning: true,
+  });
+
+  await FarmAnimal.bulkCreate(farmAnimalData, {
+    individualHooks: true,
+    returning: true,
+  });
+
+  await Animals.bulkCreate(animalsData, {
+    individualHooks: true,
+    returning: true,
+  });
+
   process.exit(0);
 };
 
