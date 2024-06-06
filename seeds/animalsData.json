@@ -1,17 +1,17 @@
 [
   {
     "name": "Chicken",
-    "price": 10,
+    "cost": 10,
     "feed_interval": 1
   },
   {
     "name": "Cow",
-    "price": 50,
+    "cost": 50,
     "feed_interval": 3
   },
   {
     "name": "Pig",
-    "price": 20,
+    "cost": 20,
     "feed_interval": 2
   }
 ]
