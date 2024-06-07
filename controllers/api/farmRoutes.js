@@ -28,7 +28,17 @@ router.get('/:id', async (req, res) => {
 })
 
 //create farm
-
+router.post('/', async (req, res) => {
+    try {
+        const newFarm = await Farm.create({
+            name: req.body.name
+        })
+        res.json(newFarm)
+    } catch(err) {
+        console.log(err)
+        res.status(500).send('Error creating new farm')
+    }
+})
 
 
 
