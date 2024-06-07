@@ -2,7 +2,7 @@ const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
 
 const Farm = require("./Farm");
-const Animals = require('./Animals')
+const Animal = require('./Animal')
 
 class FarmAnimal extends Model {}
 
@@ -23,7 +23,7 @@ FarmAnimal.init({
   animal_id: {
     type: DataTypes.INTEGER,
     references: {
-        model: Animals,
+        model: Animal,
         key: 'id'
     }
   },
