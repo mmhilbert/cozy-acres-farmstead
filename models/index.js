@@ -32,5 +32,4 @@ FarmAnimal.belongsTo(Animal, {
 })
 
 
-
 module.exports = { User, Farm, FarmAnimal, Animal };
