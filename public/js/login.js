@@ -1,3 +1,5 @@
+const signupButton = document.getElementById('signup')
+
 const loginFormHandler = async (event) => {
   event.preventDefault();
 
@@ -19,6 +21,13 @@ const loginFormHandler = async (event) => {
   }
 };
 
+const signupFormHandler = () => {
+
+  document.location.replace('/signup')
+}
+
 document
   .querySelector('.login-form')
   .addEventListener('submit', loginFormHandler);
+
+signupButton.addEventListener('click', signupFormHandler)

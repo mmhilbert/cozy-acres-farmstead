@@ -1175,6 +1175,10 @@ form [type='radio'] {
   width: 92%;
 }
 
+.float-right {
+  float: right;
+}
+
 /* FLEX CONTENT */
 .flex-row {
   display: flex;
