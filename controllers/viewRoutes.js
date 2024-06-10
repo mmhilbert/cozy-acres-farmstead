@@ -1,18 +1,41 @@
 const router = require('express').Router();
-const { User } = require('../models');
+const { User, Farm, FarmAnimal } = require('../models');
 const withAuth = require('../utils/auth');
 
-router.get('/', withAuth, async (req, res) => {
-  try {
-    const userData = await User.findAll({
-      attributes: { exclude: ['password'] },
-      order: [['name', 'ASC']],
-    });
+// STARTER CODE
+// router.get('/', withAuth, async (req, res) => {
+//   try {
+//     const userData = await User.findAll({
+//       attributes: { exclude: ['password'] },
+//       order: [['name', 'ASC']],
+//     });
 
-    const users = userData.map((project) => project.get({ plain: true }));
+//     const users = userData.map((project) => project.get({ plain: true }));
+
+//     res.render('homepage', {
+//       users,
+//       logged_in: req.session.logged_in,
+//     });
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
+// new homepage route
+router.get('/', withAuth, async (req, res) => {
+  
+  try {
+    // const userData = await User.findAll({
+    //   attributes: { exclude: ['password'] },
+    //   order: [['name', 'ASC']],
+    // });
+    const user = User.findByPk(req.session.user_id, {
+      include: { all: true, nested: true }
+    })
 
     res.render('homepage', {
-      users,
+      user,
+      farm: user.farm,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
