@@ -20,7 +20,7 @@ Animal.init(
       allowNull: false,
     },
     product_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     feed_interval: {
