@@ -2,6 +2,7 @@ const User = require('./User');
 const Farm = require('./Farm')
 const FarmAnimal = require('./FarmAnimal')
 const Animal = require('./Animal')
+const Product = require('./Product')
 
 
 
@@ -22,6 +23,10 @@ FarmAnimal.belongsTo(Farm, {
     foreignKey: 'farm_id'
 })
 
+Animal.belongsTo(Product, {
+    foreignKey: 'product_id'
+})
+
 Animal.hasMany(FarmAnimal, {
     foreignKey: 'animal_id',
     onDelete: 'CASCADE'
@@ -32,4 +37,4 @@ FarmAnimal.belongsTo(Animal, {
 })
 
 
-module.exports = { User, Farm, FarmAnimal, Animal };
+module.exports = { User, Farm, FarmAnimal, Animal, Product };

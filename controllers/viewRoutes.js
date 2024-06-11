@@ -25,10 +25,6 @@ const withAuth = require('../utils/auth');
 router.get('/', withAuth, async (req, res) => {
   
   try {
-    // const userData = await User.findAll({
-    //   attributes: { exclude: ['password'] },
-    //   order: [['name', 'ASC']],
-    // });
     const user = User.findByPk(req.session.user_id, {
       include: { all: true, nested: true }
     })
