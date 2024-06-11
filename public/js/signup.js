@@ -1,10 +1,41 @@
-const backButton = document.getElementById('backLogin')
+const signupForm = document.querySelector('.signup-form')
 
 
-const backLogin = () => {
+function signingUp(event) {
+  event.preventDefault()
 
-  document.location.replace('/login')
+  const { email: emailInput, password: passwordInput, username: usernameInput } = event.target.elements
+
+  const userInfo = {
+      "name": usernameInput.value,
+      "email": emailInput.value,
+      "password": passwordInput.value
+    }
+  
+  fetch('/api/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(userInfo)
+  })
+    .then(response => {
+      console.log(response)
+      if(response.status === 200) {
+        location.href='/'
+      } else {
+        alert('Error signing up1')
+      }
+    })
+    .catch(err => alert('Error signing up2'))
 }
 
+const backButton = document.getElementById('backLogin')
+
+const backLogin = () => {
+  document.location.replace('/')
+}
+
+signupForm.addEventListener('submit', signingUp)
 
 backButton.addEventListener('click', backLogin)
