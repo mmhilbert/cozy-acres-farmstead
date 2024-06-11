@@ -44,16 +44,6 @@ router.post('/:id/farms/:farm_id', async (req, res) => {
     }
 })
 
-// feed a farm animal (post request, need farm animal id)
-router.post('/', async (req, res) => {
-    const { animal_id } = req.params
-    try {
-
-    } catch(err) {
-        console.log(err)
-        res.status(500).send(`Error feeding animal ${animal_id}`)
-    }
-})
 
 
 module.exports = router

@@ -1,14 +1,32 @@
 [
   {
-    "name": "Chicken"
+    "farm_id": 1,
+    "animal_id": 1,
+    "name": "Gertrude"
   },
   {
-    "name": "Pig"
+    "farm_id": 1,
+    "animal_id": 3,
+    "name": "Savannah"
   },
   {
+    "farm_id": 1,
+    "animal_id": 2,
     "name": "Cow"
   },
   {
-    "name": "Sheep"
+    "farm_id": 2,
+    "animal_id": 1,
+    "name": "Pistachio"
+  },
+  {
+    "farm_id": 2,
+    "animal_id": 4,
+    "name": "Bahhhb"
+  },
+  {
+    "farm_id": 3,
+    "animal_id": 1,
+    "name": "Clucky"
   }
 ]
