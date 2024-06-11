@@ -1,0 +1,6 @@
+.grass-field {
+    height: 600px;
+    width: 800px;
+    background-image: url('../img/grass_field.svg');
+    background-repeat: repeat;
+}

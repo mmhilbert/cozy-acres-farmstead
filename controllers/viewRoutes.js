@@ -25,13 +25,14 @@ const withAuth = require('../utils/auth');
 router.get('/', withAuth, async (req, res) => {
   
   try {
-    const user = User.findByPk(req.session.user_id, {
+    const user = await User.findByPk(req.session.user_id, {
       include: { all: true, nested: true }
     })
+    console.log(user)
 
     res.render('homepage', {
-      user,
-      farm: user.farm,
+      user: user.dataValues,
+      farm: user.farm.dataValues,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
@@ -47,6 +48,20 @@ router.get('/login', (req, res) => {
 
   res.render('login');
 });
+
+// route just for testing (DO NOT GO LIVE)
+router.get('/login/:id', async (req, res) => {
+  const user = await User.findByPk(req.params.id)
+  
+  req.session.save(() => {
+    req.session.user_id = user.id;
+    req.session.logged_in = true;
+    
+    res.redirect('/');
+  });
+
+});
+
 
 router.get('/signup', (req, res) => {
   res.render('signup')
