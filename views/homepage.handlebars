@@ -1,10 +1,12 @@
-{{#each users as |user| }}
+<p>homepage</p>
 <div class="row align-center mb-5">
   <div class="col-md-6">
-    <h2>{{{get_emoji}}} {{user.name}}</h2>
+    <h2>Greetings, {{user.name}}!</h2>
+    <p>{{farm.name}}</p>
+    <p>Gold amount: {{user.current_gold}}</p>
   </div>
-  <div class="col-md-6">
-    <h3><a href="mailto:{{user.email}}">{{user.email}}</a></h3>
+  <div class="col-md-12 justify-center flex" style="background-color: #eee;">
+    <div class="grass-field"></div>
   </div>
 </div>
-{{/each}}
+

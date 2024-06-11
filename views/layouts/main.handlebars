@@ -1,25 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="lemonade">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Registry</title>
-  <link rel="stylesheet" href="/css/jass.css">
+  {{!-- <link rel="stylesheet" href="/css/jass.css"> --}}
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/css/styles.css" />
 </head>
 
 <body>
   <header class="display-flex justify-space-between align-center p-2">
-    <h1>
-      User Registry
-    </h1>
-    {{#if logged_in}}
-    <nav>
-      <button class="btn" id="logout">logout</button>
-    </nav>
-    {{/if}}
+    <div class="navbar bg-base-100">
+      <div class="flex-1">
+        <a class="btn btn-ghost text-xl">Cozy Acres Farmstead</a>
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+          {{#if logged_in}}
+          <li><button class="btn btn-primary">Profile</button></li>
+          <li>
+            <button class="btn" id="logout">Logout</button>
+          </li>
+          {{else}}
+          <li><a href="/login" class="btn btn-primary">Login</a></li>
+          <li>
+            <a href="/signup" class="btn">Sign Up</a>
+          </li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+    
   </header>
-  <main class="container container-fluid mt-5">
+  <main class="container mx-auto px-4">
     {{{ body }}}
   </main>
   <footer>
@@ -29,6 +44,7 @@
   {{#if logged_in}}
   <script src="/js/logout.js"></script>
   {{/if}}
+  <script src="https://cdn.tailwindcss.com"></script>
 </body>
 
 </html>
