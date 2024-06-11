@@ -2,16 +2,31 @@
   {
     "name": "Chicken",
     "cost": 10,
-    "feed_interval": 1
+    "feed_interval": 8,
+    "product_id": 1
   },
   {
     "name": "Cow",
     "cost": 50,
-    "feed_interval": 3
+    "feed_interval": 15,
+    "product_id": 2
   },
   {
     "name": "Pig",
     "cost": 20,
-    "feed_interval": 2
+    "feed_interval": 10,
+    "product_id": 3
+  },
+  {
+    "name": "Goat",
+    "cost": 40,
+    "feed_interval": 20,
+    "product_id": 4
+  },
+  {
+    "name": "Sheep",
+    "cost": 50,
+    "feed_interval": 20,
+    "product_id": 5
   }
 ]

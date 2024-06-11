@@ -59,4 +59,22 @@ router.post('/logout', (req, res) => {
   }
 });
 
+// get individual user for testing
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id, {
+      include: { all: true, nested: true }
+    })
+    console.log(user)
+
+    res.status(200).json({
+      user: user,
+      farm: user.farm,
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+})
+
 module.exports = router;

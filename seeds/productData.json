@@ -1,0 +1,22 @@
+[
+    {
+        "name": "eggs",
+        "value": 5
+    },
+    {
+        "name": "milk",
+        "value": 10
+    },
+    {
+        "name": "truffles",
+        "value": 12
+    },
+    {
+        "name": "goat milk",
+        "value": 12
+    },
+    {
+        "name": "wool",
+        "value": 20
+    }
+]

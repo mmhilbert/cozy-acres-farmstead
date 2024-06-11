@@ -35,6 +35,16 @@ User.init(
         len: [8],
       },
     },
+    total_gold: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    current_gold: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    }
   },
   {
     hooks: {

@@ -1,5 +1,6 @@
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes, NOW } = require("sequelize");
 const sequelize = require("../config/connection");
+const dayjs = require('dayjs')
 
 const Farm = require("./Farm");
 const Animal = require('./Animal')
@@ -30,6 +31,28 @@ FarmAnimal.init({
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  last_fed: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: NOW
+  },
+  product_ready: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  is_hungry: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      const myAnimal = this.getAnimal()
+      const feedInterval = myAnimal.feed_interval
+      let currentTime = dayjs()
+      let minutesSinceLastFed = currentTime.diff(this.last_fed, 'minute')
+      return minutesSinceLastFed > feedInterval
+    },
+    set(value) {
+      throw new Error('Do not try to set the is_hungry value!');
+    },
   }
 }, {
   sequelize,
