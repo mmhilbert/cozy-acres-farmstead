@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User, Farm, FarmAnimal } = require('../models');
+const { User, Farm, FarmAnimal, Animal, Product } = require('../models');
 const withAuth = require('../utils/auth');
 
 // STARTER CODE
@@ -28,17 +28,46 @@ router.get('/', withAuth, async (req, res) => {
     const user = await User.findByPk(req.session.user_id, {
       include: { all: true, nested: true }
     })
-    console.log(user)
+
+    const farm = await Farm.findOne({
+      where: {user_id : user.id}
+    })
+    const farmAnimals =  await FarmAnimal.findAll({
+      where: {farm_id : farm.id},
+      include: [{
+        model: Animal,
+        include: [{
+          model: Product,
+        }]
+      }]
+    })
+
+    console.log(farmAnimals)
 
     res.render('homepage', {
       user: user.dataValues,
       farm: user.farm.dataValues,
+      farm_animals: farmAnimals.map(animal => animal.toJSON()),
       logged_in: req.session.logged_in,
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
+
+router.get('/farmstore', async (req, res) => {
+  try {
+    const animals = await Animal.findAll()
+    const user = await User.findByPk(req.session.user_id)
+    res.render('farmstore', {
+      user: user.dataValues,
+      animals: animals.dataValues,
+      logged_in: req.session.logged_in,
+    });
+  } catch(err) {
+    res.status(500).json(err);
+  }
+})
 
 router.get('/login', (req, res) => {
   if (req.session.logged_in) {
