@@ -1,4 +1,4 @@
-const signupButton = document.getElementById('signup')
+const signupButton = document.getElementById('sign-up')
 
 const loginFormHandler = async (event) => {
   event.preventDefault();
@@ -22,7 +22,6 @@ const loginFormHandler = async (event) => {
 };
 
 const signupFormHandler = () => {
-
   document.location.replace('/signup')
 }
 
