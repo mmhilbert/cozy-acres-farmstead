@@ -96,6 +96,9 @@ async function addSheep() {
     sheep.x = 600;
     sheep.y = 400;
 
+    sheep.interactive = true;
+    sheep.eventMode = "static";
+
     sheepContainer.addChild(sheep);
 
     sheeps.push(sheep);
