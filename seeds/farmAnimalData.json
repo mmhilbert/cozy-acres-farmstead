@@ -28,5 +28,20 @@
     "farm_id": 3,
     "animal_id": 1,
     "name": "Clucky"
+  },
+  {
+    "farm_id": 1,
+    "animal_id": 1,
+    "name": "Evan"
+  },
+  {
+    "farm_id": 1,
+    "animal_id": 1,
+    "name": "Portabella"
+  },
+  {
+    "farm_id": 1,
+    "animal_id": 1,
+    "name": "Harold"
   }
 ]

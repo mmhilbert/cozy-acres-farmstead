@@ -1,20 +1,33 @@
 const router = require('express').Router();
 const dayjs = require('dayjs')
-const { User, Farm, FarmAnimal, Animal} = require('../../models');
+const { User, Farm, FarmAnimal, Animal, Product} = require('../../models');
 
 
 // feed a farm animal (post request, need farm animal id)
-router.post('/:id/feed', async (req, res) => {
-    const { id } = req.params
+router.post('/:farmAnimalId/feed', async (req, res) => {
+    const { farmAnimalId } = req.params
     try {
-        const farmAnimal = await FarmAnimal.findByPk(id)
-        console.log(farmAnimal)
-        farmAnimal.last_fed = dayjs().format('YYYY-MM-DD HH:mm:ss')
-        farmAnimal.product_ready = true
-
-        await farmAnimal.save()
-        await farmAnimal.reload()
-        res.status(200).json(farmAnimal)
+        const animal = await FarmAnimal.findByPk(farmAnimalId, {
+            attributes: ['animal_id'],
+            include: [{
+                model: Animal,
+                attributes: ['product_id'],
+                include: [{
+                    model: Product,
+                    attributes: ['value']
+                }]
+            }]
+        })
+        const value = animal.animal.product.value
+        const user = await User.increment({
+            total_gold: +value,
+            current_gold: +value
+        }, {
+            where: {
+                id: 1 // req.session.user_id
+            }
+        })
+        res.status(200).json(user[0][0][0].current_gold)
     } catch(err) {
         console.log(err)
         res.status(500).send(`Error feeding animal`)
