@@ -72,18 +72,30 @@ async function addCows() {
 
 async function addSheep() {
   const sheepTexture = await Assets.load("./assets/sheep.png");
+  const sheepContainer = new Container();
 
-  const sheepCount = 5;
+  const allSheep = allAnimals.filter(
+    (animal) => animal.animal.name === "Sheep"
+  );
 
-  for (let i = 0; i < sheepCount; i++) {
+  for (let i = 0; i < allSheep.length; i++) {
     const sheep = new Sprite(sheepTexture);
+    sheep.id = allSheep[i].id;
+    sheep.on("pointerdown", function () {
+      console.log(sheep.id);
+    });
 
+    app.stage.addChild(sheepContainer);
     sheep.anchor.set(0.5);
+
+    sheep.direction = Math.random() * Math.PI * 2;
+    sheep.speed = Math.random();
+    sheep.turningSpeed = Math.random() - 0.8;
 
     sheep.x = 600;
     sheep.y = 400;
 
-    app.stage.addChild(sheep);
+    sheepContainer.addChild(sheep);
 
     sheeps.push(sheep);
   }
@@ -91,18 +103,29 @@ async function addSheep() {
 
 async function addPigs() {
   const pigTexture = await Assets.load("./assets/pig.png");
+  const pigContainer = new Container();
 
-  const pigCount = 5;
+  const allPigs = allAnimals.filter((animal) => animal.animal.name === "Pig");
 
-  for (let i = 0; i < pigCount; i++) {
+  for (let i = 0; i < allPigs.length; i++) {
     const pig = new Sprite(pigTexture);
+    pig.id = allPigs[i].id;
+    pig.on("pointerdown", function () {
+      console.log(pig.id);
+    });
+
+    pigContainer.addChild(pig);
 
     pig.anchor.set(0.5);
+
+    pig.direction = Math.random() * Math.PI * 2;
+    pig.speed = Math.random();
+    pig.turningSpeed = Math.random() - 0.8;
 
     pig.x = 600;
     pig.y = 200;
 
-    app.stage.addChild(pig);
+    pigContainer.addChild(pig);
 
     pigs.push(pig);
   }
@@ -111,16 +134,22 @@ async function addChickens() {
   const chickenTexture = await Assets.load("./assets/chicken.png");
   const chickenContainer = new Container();
 
-  const chickenCount = 5;
+  const allChickens = allAnimals.filter(
+    (animal) => animal.animal.name === "Chicken"
+  );
 
-  for (let i = 0; i < chickenCount; i++) {
+  for (let i = 0; i < allChickens.length; i++) {
     const chicken = new Sprite(chickenTexture);
+    chicken.id = allChickens[i].id;
+    chicken.on("pointerdown", function () {
+      console.log(chicken.id);
+    });
     app.stage.addChild(chickenContainer);
 
     chicken.anchor.set(0.5);
 
     chicken.direction = Math.random() * Math.PI * 2;
-    chicken.speed = Math.random() + 1;
+    chicken.speed = Math.random();
     chicken.turningSpeed = Math.random() - 0.8;
 
     chicken.x = 150;
@@ -128,7 +157,7 @@ async function addChickens() {
 
     chicken.scale.set(0.8 + Math.random() * 0.3);
     chickenContainer.addChild(chicken);
-    app.stage.addChild(chicken);
+
     chickens.push(chicken);
   }
 }
