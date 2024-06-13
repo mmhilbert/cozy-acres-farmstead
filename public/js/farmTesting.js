@@ -159,11 +159,17 @@ async function addChickens() {
     chicken.anchor.set(0.5);
 
     chicken.direction = Math.random() * Math.PI * 2;
+    console.log(chicken.direction);
     chicken.speed = Math.random();
     chicken.turningSpeed = Math.random() - 0.8;
 
     chicken.x = 150;
     chicken.y = 400;
+
+    chicken.previousX = chicken.x;
+    chicken.previousY = chicken.y;
+
+    chicken.isFacingTowards = true;
 
     chicken.scale.set(0.8 + Math.random() * 0.3);
     chickenContainer.addChild(chicken);
@@ -212,10 +218,23 @@ function animateChickens(app, chickens, time) {
 
   chickens.forEach((chicken) => {
     chicken.direction += chicken.turningSpeed * 0.01;
+
+    chicken.previousX = chicken.x;
+    chicken.previousY = chicken.y;
+
+    // if(chicken.y - chicken.previousY > 0) {
+
+    // }
+
     chicken.x += Math.sin(chicken.direction) * chicken.speed;
     chicken.y += Math.cos(chicken.direction) * chicken.speed;
-    chicken.rotation = -chicken.direction - Math.PI / 2;
 
+    chicken.isFacingTowards = chicken.y - chicken.previousY > 0;
+
+    console.log(chicken.isFacingTowards, chicken.y - chicken.previousY);
+    // console.log(chicken.direction);
+    chicken.rotation = -chicken.direction - Math.PI / 2;
+    // console.log(chicken.direction);
     if (chicken.x < -stagePadding) {
       chicken.x += boundWidth;
     }
@@ -228,6 +247,8 @@ function animateChickens(app, chickens, time) {
     if (chicken.y > boundHeight) {
       chicken.y -= boundHeight;
     }
+
+    // console.log(chicken.y);
   });
 }
 
@@ -351,6 +372,13 @@ function checkPigCollision(pigs) {
     }
     if (pig.y > 300) {
       pig.y = 0;
+    }
+  });
+}
+
+function checkCowDirection(cows) {
+  cows.forEach((cow) => {
+    if (cow.direction > 270) {
     }
   });
 }
