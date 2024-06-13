@@ -21,7 +21,9 @@ async function init() {
   addSheep();
   addPigs();
   addChickens();
-
+  console.log("------------------------------------------");
+  console.log(cows);
+  console.log("------------------------------------------");
   app.ticker.add((time) => {
     animateCows(app, cows, time);
     animateChickens(app, chickens, time);
