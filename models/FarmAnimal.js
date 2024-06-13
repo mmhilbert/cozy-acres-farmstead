@@ -41,18 +41,9 @@ FarmAnimal.init({
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  is_hungry: {
-    type: DataTypes.VIRTUAL,
-    get() {
-
-      const feedInterval = this.animal.feed_interval
-      let currentTime = dayjs()
-      let minutesSinceLastFed = currentTime.diff(this.last_fed, 'minute')
-      return minutesSinceLastFed > feedInterval
-    },
-    set(value) {
-      throw new Error('Do not try to set the is_hungry value!');
-    },
+  is_alive: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
   }
 }, {
   sequelize,

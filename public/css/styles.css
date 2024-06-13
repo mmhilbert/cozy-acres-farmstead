@@ -1,23 +1,26 @@
-.grass-field {
-    height: 600px;
-    width: 800px;
-    background-image: url('../img/grass_field.svg');
-    background-repeat: repeat;
-    position: relative;
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-image: url("../img/grass_field.svg");
+  background-repeat: repeat;
+  position: relative;
 }
 
 .barn {
-    background-image: url('../img/barn.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    object-fit: fill;
-    position: absolute;
-    height: 180px;
-    width: 100%;
-    top: -60px;
-    left:0;
-    right: 0;
-    transform: translateX(calc(50% - 90px));
+  background-image: url("../img/barn.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  object-fit: fill;
+  position: absolute;
+  height: 180px;
+  width: 100%;
+  top: -60px;
+  left: 0;
+  right: 0;
+  transform: translateX(calc(50% - 90px));
 }
 
 .logo {

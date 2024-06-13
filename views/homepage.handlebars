@@ -1,33 +1,63 @@
-<div class="flex flex-wrap align-center mb-5">
-  <div class="w-1/2">
-    <h2>Greetings, {{user.name}}!</h2>
-    <p>{{farm.name}}</p>
-    <p># of Animals: {{ farm_animals.length }}</p>
-    <p>Gold amount: {{user.current_gold}}</p>
-  </div>
-  <div class="w-1/2 flex justify-end">
-    <a href="/farmstore" class="btn z-10">Farm Store</a>
-  </div>
-  <div class="w-full justify-center flex" style="background-color: #eee;">
-    <div class="grass-field">
-      <div class="barn">
-
-      </div>
-      {{#each farm_animals as |farmAnimal| }}
-        <div class="card w-96">
-          <div class="card-body items-center text-center">
-            <h2 class="card-title">
-              {{farmAnimal.name}} the {{farmAnimal.animal.name}}
-            </h2>
-            {{#if farmAnimal.is_hungry}}
-            <button class="btn btn-accent">Feed Me!</button>
-            {{else if farmAnimal.dataValues.product_ready}}
-            <button class="btn btn-accent">Collect {{farmAnimal.animal.product.name}}</button>
-            {{/if}}
-          </div>
-      </div>
-      {{/each}}
-    </div>
-  </div>
+<div class="flex justify-center">
+  <img class="w-44 -mt-12" src="/img/barn.png" alt="" />
 </div>
 
+<div class="farm flex justify-center">
+
+</div>
+{{!-- <div class="flex flex-wrap align-center mb-5">
+  {{!-- <div class="w-1/2">
+    <h2>Greetings, {{user.name}}!</h2>
+    <p>{{farm.name}}</p>
+    <p># of Animals: {{farm_animals.length}}</p>
+    <p>Gold amount: {{user.current_gold}}</p>
+  </div> --}}
+{{! <div class="w-1/2 flex justify-end">
+    <a href="/farmstore" class="btn z-10">Farm Store</a>
+  </div>
+
+  <div class="w-full justify-center flex" style="background-color: #eee;">
+    <div class="grass-field"> }}
+
+{{!-- {{#each farm_animals as |farmAnimal|}}
+        <div class="card w-96" data-id="{{farmAnimal.id}}">
+          <div class="card-body items-center text-center">
+            <h2 class="card-title">
+              {{farmAnimal.name}}
+              the
+              {{farmAnimal.animal.name}}
+            </h2>
+            {{#if farmAnimal.is_hungry}}
+              <button class="feed-me-btn btn btn-accent">Feed Me!</button>
+            {{else if farmAnimal.product_ready}}
+              <button class="collect-btn btn btn-accent">Collect
+                {{farmAnimal.animal.product.name}}</button>
+            {{/if}}
+          </div>
+        </div>
+      {{/each}} --}}
+{{! </div>
+  </div>
+</div> }}
+<script src="/js/gameHelpers.js"></script>
+<script src="/js/pixi.min.js"></script>
+<script>
+  const allAnimals = [
+  {{#each farm_animals as |farmAnimal|}}
+    {
+      id: {{farmAnimal.id}},
+      name: "{{farmAnimal.name}}",
+      animal: {
+        name: "{{farmAnimal.animal.name}}",
+        product: {
+          name: "{{farmAnimal.animal.product.name}}"
+        }
+      },
+      is_alive: {{farmAnimal.is_alive}},
+      product_ready: {{farmAnimal.product_ready}}
+    },
+  {{/each}}
+  ];
+  console.log(allAnimals);
+</script>
+<script type="module" src="/js/farmTesting.js"></script>
