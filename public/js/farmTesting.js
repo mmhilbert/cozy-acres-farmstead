@@ -49,6 +49,7 @@ async function addCows() {
     cow.id = allCows[i].id;
     cow.on("pointerdown", function () {
       handleFeedAnimal(cow.id);
+      //adding something for commit
     });
 
     app.stage.addChild(cowContainer);
