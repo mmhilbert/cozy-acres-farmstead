@@ -14,15 +14,15 @@
 
       </div>
       {{#each farm_animals as |farmAnimal| }}
-        <div class="card w-96">
+        <div class="card w-96" data-id="{{farmAnimal.id}}">
           <div class="card-body items-center text-center">
             <h2 class="card-title">
               {{farmAnimal.name}} the {{farmAnimal.animal.name}}
             </h2>
             {{#if farmAnimal.is_hungry}}
-            <button class="btn btn-accent">Feed Me!</button>
-            {{else if farmAnimal.dataValues.product_ready}}
-            <button class="btn btn-accent">Collect {{farmAnimal.animal.product.name}}</button>
+            <button class="feed-me-btn btn btn-accent">Feed Me!</button>
+            {{else if farmAnimal.product_ready}}
+            <button class="collect-btn btn btn-accent">Collect {{farmAnimal.animal.product.name}}</button>
             {{/if}}
           </div>
       </div>
@@ -30,4 +30,5 @@
     </div>
   </div>
 </div>
+<script src="/js/homepage.js"></script>
 

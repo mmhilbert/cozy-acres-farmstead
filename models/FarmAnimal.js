@@ -44,7 +44,6 @@ FarmAnimal.init({
   is_hungry: {
     type: DataTypes.VIRTUAL,
     get() {
-
       const feedInterval = this.animal.feed_interval
       let currentTime = dayjs()
       let minutesSinceLastFed = currentTime.diff(this.last_fed, 'minute')

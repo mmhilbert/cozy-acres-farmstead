@@ -8,6 +8,7 @@ router.post('/:id/feed', async (req, res) => {
     const { id } = req.params
     try {
         const farmAnimal = await FarmAnimal.findByPk(id)
+        console.log(farmAnimal)
         farmAnimal.last_fed = dayjs().format('YYYY-MM-DD HH:mm:ss')
         farmAnimal.product_ready = true
 
@@ -16,8 +17,18 @@ router.post('/:id/feed', async (req, res) => {
         res.status(200).json(farmAnimal)
     } catch(err) {
         console.log(err)
-        res.status(500).send(`Error feeding animal ${animal_id}`)
+        res.status(500).send(`Error feeding animal`)
     }
+})
+
+// collect product 
+router.post('/:id/collect-product', async (req, res) => {
+    const user = await User.findByPk(req.session.user_id)
+    // get farm animal with animal and product included
+    // get value of product
+    //add value to current goal and total gold
+    user.current_goal += product.value
+    // set animal.product_ready = false 
 })
 
 
