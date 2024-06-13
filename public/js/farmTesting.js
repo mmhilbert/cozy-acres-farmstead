@@ -29,6 +29,8 @@ async function init() {
     animatePigs(app, pigs, time);
     checkCowCollision(cows);
     checkChickenCollision(chickens);
+    checkSheepCollision(sheeps);
+    checkPigCollision(pigs);
   });
 }
 async function setup() {
@@ -315,4 +317,37 @@ function checkChickenCollision(chickens) {
   });
 }
 
+function checkSheepCollision(sheeps) {
+  sheeps.forEach((sheep) => {
+    if (sheep.x < 400) {
+      sheep.x = 800;
+    }
+    if (sheep.x > 800) {
+      sheep.x = 400;
+    }
+    if (sheep.y < 300) {
+      sheep.y = 600;
+    }
+    if (sheep.y > 600) {
+      sheep.y = 300;
+    }
+  });
+}
+
+function checkPigCollision(pigs) {
+  pigs.forEach((pig) => {
+    if (pig.x < 400) {
+      pig.x = 800;
+    }
+    if (pig.x > 800) {
+      pig.x = 400;
+    }
+    if (pig.y < 0) {
+      pig.y = 300;
+    }
+    if (pig.y > 300) {
+      pig.y = 0;
+    }
+  });
+}
 init();
