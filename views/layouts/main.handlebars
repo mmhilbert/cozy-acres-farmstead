@@ -19,14 +19,9 @@
       <div class="flex-none">
         <ul class="menu menu-horizontal px-1">
           {{#if logged_in}}
-          <li><button class="btn btn-primary">Profile</button></li>
+          <li><button><img src="img/profilebtn.png"></button></li>
           <li>
-            <button class="btn" id="logout">Logout</button>
-          </li>
-          {{else}}
-          <li><a href="/login" class="btn btn-primary">Login</a></li>
-          <li>
-            <a href="/signup" class="btn">Sign Up</a>
+            <button id="logout"><img src="img/logoutbtn.png"></button>
           </li>
           {{/if}}
         </ul>

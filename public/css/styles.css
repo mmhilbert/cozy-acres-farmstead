@@ -19,3 +19,12 @@
     right: 0;
     transform: translateX(calc(50% - 90px));
 }
+
+.logo {
+    width: 50%;
+    height: 50%;
+}
+
+.float-right {
+    float: right;
+  }
