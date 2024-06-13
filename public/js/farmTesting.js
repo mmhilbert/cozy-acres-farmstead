@@ -63,6 +63,11 @@ async function addCows() {
     cow.x = 150;
     cow.y = 200;
 
+    cow.previousX = cow.x;
+    cow.previousY = cow.y;
+
+    cow.isFacingTowards = true;
+
     cow.scale.set(0.8 + Math.random() * 0.3);
     cowContainer.addChild(cow);
     cows.push(cow);
@@ -96,6 +101,11 @@ async function addSheep() {
 
     sheep.x = 600;
     sheep.y = 400;
+
+    sheep.previousX = sheep.x;
+    sheep.previousY = sheep.y;
+
+    sheep.isFacingTowards = true;
 
     sheep.interactive = true;
     sheep.eventMode = "static";
@@ -132,6 +142,11 @@ async function addPigs() {
     pig.x = 600;
     pig.y = 200;
 
+    pig.previousX = pig.x;
+    pig.previousY = pig.y;
+
+    pig.isFacingTowards = true;
+
     pig.interactive = true;
     pig.eventMode = "static";
 
@@ -159,7 +174,7 @@ async function addChickens() {
     chicken.anchor.set(0.5);
 
     chicken.direction = Math.random() * Math.PI * 2;
-    console.log(chicken.direction);
+    // console.log(chicken.direction);
     chicken.speed = Math.random();
     chicken.turningSpeed = Math.random() - 0.8;
 
@@ -190,9 +205,15 @@ function animateCows(app, cows, time) {
 
   cows.forEach((cow) => {
     cow.direction += cow.turningSpeed * 0.01;
+
+    cow.previousX = cow.x;
+    cow.previousY = cow.y;
+
     cow.x += Math.sin(cow.direction) * cow.speed;
     cow.y += Math.cos(cow.direction) * cow.speed;
     cow.rotation = -cow.direction - Math.PI / 2;
+
+    cow.isFacingTowards = cow.y - cow.previousY > 0;
 
     if (cow.x < -stagePadding) {
       cow.x += boundWidth;
@@ -261,9 +282,15 @@ function animateSheep(app, sheeps, time) {
 
   sheeps.forEach((sheep) => {
     sheep.direction += sheep.turningSpeed * 0.01;
+
+    sheep.previousX = sheep.x;
+    sheep.previousY = sheep.y;
+
     sheep.x += Math.sin(sheep.direction) * sheep.speed;
     sheep.y += Math.cos(sheep.direction) * sheep.speed;
     sheep.rotation = -sheep.direction - Math.PI / 2;
+
+    sheep.isFacingTowards = sheep.y - sheep.previousY > 0;
 
     if (sheep.x < -stagePadding) {
       sheep.x += boundWidth;
@@ -289,9 +316,15 @@ function animatePigs(app, pigs, time) {
 
   pigs.forEach((pig) => {
     pig.direction += pig.turningSpeed * 0.01;
+
+    pig.previousX = pig.x;
+    pig.previousY = pig.y;
+
     pig.x += Math.sin(pig.direction) * pig.speed;
     pig.y += Math.cos(pig.direction) * pig.speed;
     pig.rotation = -pig.direction - Math.PI / 2;
+
+    pig.isFacingTowards = pig.y - pig.previousY > 0;
 
     if (pig.x < -stagePadding) {
       pig.x += boundWidth;
