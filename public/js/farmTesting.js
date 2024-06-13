@@ -25,6 +25,8 @@ async function init() {
   app.ticker.add((time) => {
     animateCows(app, cows, time);
     animateChickens(app, chickens, time);
+    animateSheep(app, sheeps, time);
+    animatePigs(app, pigs, time);
     checkCowCollision(cows);
     checkChickenCollision(chickens);
   });
@@ -37,9 +39,6 @@ async function setup() {
 async function addCows() {
   const cowTexture = await Assets.load("./assets/cow.png");
   const cowContainer = new Container();
-  // cowContainer.width = 100;
-  // cowContainer.height = 100;
-  // console.log(cowContainer.getSize());
 
   const allCows = allAnimals.filter((animal) => animal.animal.name === "Cow");
 
@@ -107,6 +106,8 @@ async function addPigs() {
 
   const allPigs = allAnimals.filter((animal) => animal.animal.name === "Pig");
 
+  console.log(allPigs);
+
   for (let i = 0; i < allPigs.length; i++) {
     const pig = new Sprite(pigTexture);
     pig.id = allPigs[i].id;
@@ -114,7 +115,7 @@ async function addPigs() {
       console.log(pig.id);
     });
 
-    pigContainer.addChild(pig);
+    app.stage.addChild(pigContainer);
 
     pig.anchor.set(0.5);
 
@@ -124,6 +125,9 @@ async function addPigs() {
 
     pig.x = 600;
     pig.y = 200;
+
+    pig.interactive = true;
+    pig.eventMode = "static";
 
     pigContainer.addChild(pig);
 
@@ -137,7 +141,7 @@ async function addChickens() {
   const allChickens = allAnimals.filter(
     (animal) => animal.animal.name === "Chicken"
   );
-
+  console.log(allChickens);
   for (let i = 0; i < allChickens.length; i++) {
     const chicken = new Sprite(chickenTexture);
     chicken.id = allChickens[i].id;
@@ -157,6 +161,9 @@ async function addChickens() {
 
     chicken.scale.set(0.8 + Math.random() * 0.3);
     chickenContainer.addChild(chicken);
+
+    chicken.interactive = true;
+    chicken.eventMode = "static";
 
     chickens.push(chicken);
   }
@@ -214,6 +221,62 @@ function animateChickens(app, chickens, time) {
     }
     if (chicken.y > boundHeight) {
       chicken.y -= boundHeight;
+    }
+  });
+}
+
+function animateSheep(app, sheeps, time) {
+  const delta = time.deltaTime;
+
+  const stagePadding = 100;
+  const boundWidth = app.screen.width + stagePadding * 2;
+  const boundHeight = app.screen.height + stagePadding * 2;
+
+  sheeps.forEach((sheep) => {
+    sheep.direction += sheep.turningSpeed * 0.01;
+    sheep.x += Math.sin(sheep.direction) * sheep.speed;
+    sheep.y += Math.cos(sheep.direction) * sheep.speed;
+    sheep.rotation = -sheep.direction - Math.PI / 2;
+
+    if (sheep.x < -stagePadding) {
+      sheep.x += boundWidth;
+    }
+    if (sheep.x > boundWidth) {
+      sheep.x -= boundWidth;
+    }
+    if (sheep.y < -stagePadding) {
+      sheep.y += boundHeight;
+    }
+    if (sheep.y > boundHeight) {
+      sheep.y -= boundHeight;
+    }
+  });
+}
+
+function animatePigs(app, pigs, time) {
+  const delta = time.deltaTime;
+
+  const stagePadding = 100;
+  const boundWidth = app.screen.width + stagePadding * 2;
+  const boundHeight = app.screen.height + stagePadding * 2;
+
+  pigs.forEach((pig) => {
+    pig.direction += pig.turningSpeed * 0.01;
+    pig.x += Math.sin(pig.direction) * pig.speed;
+    pig.y += Math.cos(pig.direction) * pig.speed;
+    pig.rotation = -pig.direction - Math.PI / 2;
+
+    if (pig.x < -stagePadding) {
+      pig.x += boundWidth;
+    }
+    if (pig.x > boundWidth) {
+      pig.x -= boundWidth;
+    }
+    if (pig.y < -stagePadding) {
+      pig.y += boundHeight;
+    }
+    if (pig.y > boundHeight) {
+      pig.y -= boundHeight;
     }
   });
 }
