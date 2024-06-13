@@ -47,7 +47,7 @@ async function addCows() {
     const cow = new Sprite(cowTexture);
     cow.id = allCows[i].id;
     cow.on("pointerdown", function () {
-      console.log(cow.id);
+      handleFeedAnimal(cow.id);
     });
 
     app.stage.addChild(cowContainer);

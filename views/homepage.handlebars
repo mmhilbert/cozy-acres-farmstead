@@ -39,18 +39,25 @@
 {{! </div>
   </div>
 </div> }}
-<script src="/js/homepage.js"></script>
+<script src="/js/gameHelpers.js"></script>
 <script src="/js/pixi.min.js"></script>
 <script>
   const allAnimals = [
   {{#each farm_animals as |farmAnimal|}}
-    { id:
-    {{farmAnimal.id}}, name: "{{farmAnimal.name}}", animal: { name: "{{farmAnimal.animal.name}}",
-    product: { name: "{{farmAnimal.animal.product.name}}" } }, is_hungry:
-    {{farmAnimal.is_hungry}}, product_ready:
-    {{farmAnimal.product_ready}}
+    {
+      id: {{farmAnimal.id}},
+      name: "{{farmAnimal.name}}",
+      animal: {
+        name: "{{farmAnimal.animal.name}}",
+        product: {
+          name: "{{farmAnimal.animal.product.name}}"
+        }
+      },
+      is_alive: {{farmAnimal.is_alive}},
+      product_ready: {{farmAnimal.product_ready}}
     },
   {{/each}}
-  ]; console.log(allAnimals);
+  ];
+  console.log(allAnimals);
 </script>
 <script type="module" src="/js/farmTesting.js"></script>
