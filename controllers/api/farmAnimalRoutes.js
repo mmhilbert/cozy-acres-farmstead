@@ -24,7 +24,7 @@ router.post('/:farmAnimalId/feed', async (req, res) => {
             current_gold: +value
         }, {
             where: {
-                id: 1 // req.session.user_id
+                id: req.session.user_id
             }
         })
         res.status(200).json(user[0][0][0].current_gold)
@@ -34,15 +34,19 @@ router.post('/:farmAnimalId/feed', async (req, res) => {
     }
 })
 
-// collect product 
-router.post('/:id/collect-product', async (req, res) => {
-    const user = await User.findByPk(req.session.user_id)
-    // get farm animal with animal and product included
-    // get value of product
-    //add value to current goal and total gold
-    user.current_goal += product.value
-    // set animal.product_ready = false 
-})
+// unalive farm animal
+router.post('/:farmAnimalId/animal-died', async (req, res) => {
+    const { farmAnimalId } = req.params
+
+    try {
+        const animal = await FarmAnimal.findByPk(req.session.animal_id)
+        animal.is_alive = false
+        await animal.save()
+        res.status(200).json(animal)
+    } catch(err) {
+        console.log(err)
+    }
+}) 
 
 
 module.exports = router

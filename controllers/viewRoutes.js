@@ -27,30 +27,35 @@ router.get("/", withAuth, async (req, res) => {
     const user = await User.findByPk(req.session.user_id, {
       include: { all: true, nested: true },
     });
-
+    
     const farm = await Farm.findOne({
       where: { user_id: user.id },
     });
-    const farmAnimals = await FarmAnimal.findAll({
-      where: { farm_id: farm.id },
-      include: [
-        {
-          model: Animal,
-          include: [
-            {
-              model: Product,
-            },
-          ],
-        },
-      ],
-    });
 
-    const farm_animals = farmAnimals.map((animal) => animal.toJSON());
-    console.log(farm_animals);
+    console.log(farm)
+    let farm_animals = []
+    if (farm) {
+      const farmAnimals = await FarmAnimal.findAll({
+        where: { farm_id: farm.id },
+        include: [
+          {
+            model: Animal,
+            include: [
+              {
+                model: Product,
+              },
+            ],
+          },
+        ],
+      });
+  
+      farm_animals = farmAnimals.map((animal) => animal.toJSON());
+    }
+
 
     res.render("homepage", {
       user: user.dataValues,
-      farm: user.farm.dataValues,
+      farm: farm ? farm.dataValues: null,
       farm_animals,
       logged_in: req.session.logged_in,
     });
