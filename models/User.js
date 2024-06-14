@@ -38,12 +38,12 @@ User.init(
     total_gold: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0
+      defaultValue: 50
     },
     current_gold: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0
+      defaultValue: 50
     }
   },
   {

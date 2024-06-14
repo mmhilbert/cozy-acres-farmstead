@@ -5,31 +5,28 @@ const backLogin = () => {
 
 backBtn.addEventListener('click', backLogin)
 
-const cowBtn = document.getElementById('buyCow')
-const chickenBtn = document.getElementById('buyChicken')
-const sheepBtn = document.getElementById('buySheep')
-const pigBtn = document.getElementById('buyPig')
+const buyButtons = document.querySelectorAll('.buy-btn')
 
-const addCow = async () => {
-  
-  const response = await fetch('/api/users/', {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-    headers: { 'Content-Type': 'application/json' },
-  });
 
-  if (response.ok) {
-    console.log(response);}
-  
-  const respond = await fetch(`/2/farms/${farmId}`, {
+const buyAnimal = async (e) => {
+  e.preventDefault()
+  let name = prompt("Please enter your animal's name", "Bessy");
+  const animalId = e.target.dataset.animalId
+  const respond = await fetch(`api/animals/${animalId}/farms/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({'name': name})
     })
+
     if (respond.status == 200) {
-      console.log('Added a cow to the farm')
+      console.log('Added an animal')
 
     }
 }
-cowBtn.addEventListener('click', addCow)
+
+// // loops over nodeList of buy buttons to add event listener on all
+Array.from(buyButtons).forEach(button => {
+  button.addEventListener('click', buyAnimal)
+})

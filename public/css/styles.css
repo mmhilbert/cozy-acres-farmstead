@@ -1,6 +1,6 @@
 html,
 body {
-  height: 100vh;
+  height: 1000px;
 }
 
 body {
@@ -46,4 +46,9 @@ body {
   border: 5px solid black;
   font-size: 28px;
   font-weight: bold;
+  backdrop-filter: blur(5px);
+}
+
+.animal-row {
+  border-bottom: black 2px solid;
 }

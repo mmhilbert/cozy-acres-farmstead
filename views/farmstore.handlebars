@@ -4,10 +4,14 @@
 <div class="mt-5 farm-store">
     <div class="m-5">
         <ul class="m-5">
-            <li class="m-5">cow<span class="store-text">$8</span><button id="buyCow" class="btn float-right">buy</button></li>
-            <li class="m-5">chicken<span class="store-text">$6</span><button id="buyChicken" class="btn float-right">buy</button></li>
-            <li class="m-5">sheep<span class="store-text">$4</span><button id="buySheep" class="btn float-right">buy</button></li>
-            <li class="m-5">pig<span class="store-text">$2</span><button id="buyPig" class="btn float-right">buy</button></li>
+            {{#each animals as |animal|}}
+                <li class="p-5 animal-row">{{animal.name}}<span class="store-text">${{ animal.cost }}</span>
+                    <button  
+                        class="btn float-right buy-btn" 
+                        data-animal-id="{{animal.id}}"
+                    >Buy</button>
+                </li>
+            {{/each}}
         </ul>
     </div>
 </div>
