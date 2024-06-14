@@ -28,6 +28,18 @@ body {
     height: 50%;
 }
 
+.store-text {
+  float: right;
+  margin-right: 40%;
+}
+
 .float-right {
     float: right;
   }
+
+.farm-store {
+  border: 5px solid black;
+  font-size: 28px;
+  font-weight: bold;
+}
+
