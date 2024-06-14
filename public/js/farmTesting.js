@@ -6,36 +6,76 @@ const {
   Texture,
   TilingSprite,
   DisplacementFilter,
-} = window.PIXI;
+  } = window.PIXI;
+  
+  let cows = [];
+  let chickens = [];
+  let sheeps = [];
+  let pigs = [];
+  let markedForDeletion = [];
+  
+  const app = new Application();
 
-const cows = [];
-const chickens = [];
-const sheeps = [];
-const pigs = [];
+function handleFeedAnimal(id){
+  console.log(id);
+  const cow = cows.find(cow => cow.id === id);
+  if(cow.canFeed){
+  handleFeedAnimalFetch(cow.id)
+  console.log(cow);
+    cow.lastFed = new Date().getTime();
+    console.log("Cow fed");
+    cow.canFeed = false;
+  }
+
+}
+
 
 function handleHungerLevel() {}
 
 function checkCanFeed() {
   const currentTime = new Date().getTime();
   cows.forEach((cow) => {
-    console.log(currentTime, cow.lastFed);
-    console.log(((currentTime - cow.lastFed)))
+    //increase hunger level
+    cow.hungerLevel++;
+    //checking if cow hunger level is greated than max
+    console.log(cow.hungerLevel)
+    if(cow.hungerLevel >5){
+      // is_alive = false 
+      handleUnaliveAnimalFetch(cow.id);
+      markedForDeletion.push(cow.id);
+    }
+  // checking if cow can be fed
     if ((currentTime - cow.lastFed) > 10000) {
       cow.canFeed = true;
     } else {
       cow.canFeed = false;
     }
     console.log(cow.canFeed);
+    
   });
+  animalsToHeaven();
 }
+function animalsToHeaven(){
+  markedForDeletion.forEach((id) => {
+    cows = cows.filter((cow) =>{
+      const cowCanStayAlive =cow.id !== id
+      if(!cowCanStayAlive){
+        app.stage.removeChild(cow);
+        cow.destroy();
+      }
+      return cowCanStayAlive;
+    } )
+    
+  });
 
+
+}
 setInterval(() => {
 
   handleHungerLevel();
   checkCanFeed();
 }, 1000);
 
-const app = new Application();
 
 async function init() {
   await setup();
@@ -73,8 +113,8 @@ async function addCows() {
     const cow = new Sprite(cowTexture);
     cow.id = allCows[i].id;
     cow.on("pointerdown", function () {
-      // handleFeedAnimalFetch(cow.id);
-      // handleFeedAnimal(cow.id);
+      
+      handleFeedAnimal(cow.id);
     });
 
     app.stage.addChild(cowContainer);
@@ -85,12 +125,15 @@ async function addCows() {
     cow.speed = Math.random();
     cow.turningSpeed = Math.random() - 0.8;
 
+
+
     cow.x = 150;
     cow.y = 200;
 
     cow.lastFed = new Date().getTime();
     cow.canFeed = false;
 
+    cow.hungerLevel = 0;
     cow.previousX = cow.x;
     cow.previousY = cow.y;
 

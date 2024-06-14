@@ -21,7 +21,7 @@ const handleFeedAnimalFetch = async (animalId) => {
 }
 
 // fetch request to unalive an animal
-const handleUnaliveAnimal = async (animalId) => {
+const handleUnaliveAnimalFetch = async (animalId) => {
   console.log("I unalived")
     const response = await fetch(`/api/farmAnimals/${animalId}/animal-died`, {
       method: 'POST',
@@ -30,9 +30,9 @@ const handleUnaliveAnimal = async (animalId) => {
       }
     })
 
-    if (response.status == 200) {
-      // remove sprite
-    }
+    // if (response.status == 200) {
+    //   // remove sprite
+    // }
 
 }
 

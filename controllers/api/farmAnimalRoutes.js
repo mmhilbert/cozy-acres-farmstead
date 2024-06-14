@@ -39,7 +39,7 @@ router.post('/:farmAnimalId/animal-died', async (req, res) => {
     const { farmAnimalId } = req.params
 
     try {
-        const animal = await FarmAnimal.findByPk(req.session.animal_id)
+        const animal = await FarmAnimal.findByPk(farmAnimalId)
         animal.is_alive = false
         await animal.save()
         res.status(200).json(animal)
