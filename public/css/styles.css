@@ -28,3 +28,11 @@ body {
   width: 80%;
   align-self: center;
 }
+.logo {
+    width: 50%;
+    height: 50%;
+}
+
+.float-right {
+    float: right;
+  }

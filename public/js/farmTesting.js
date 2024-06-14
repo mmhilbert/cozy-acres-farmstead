@@ -25,8 +25,12 @@ async function init() {
   app.ticker.add((time) => {
     animateCows(app, cows, time);
     animateChickens(app, chickens, time);
+    animateSheep(app, sheeps, time);
+    animatePigs(app, pigs, time);
     checkCowCollision(cows);
     checkChickenCollision(chickens);
+    checkSheepCollision(sheeps);
+    checkPigCollision(pigs);
   });
 }
 async function setup() {
@@ -37,9 +41,6 @@ async function setup() {
 async function addCows() {
   const cowTexture = await Assets.load("./assets/cow.png");
   const cowContainer = new Container();
-  // cowContainer.width = 100;
-  // cowContainer.height = 100;
-  // console.log(cowContainer.getSize());
 
   const allCows = allAnimals.filter((animal) => animal.animal.name === "Cow");
 
@@ -48,6 +49,7 @@ async function addCows() {
     cow.id = allCows[i].id;
     cow.on("pointerdown", function () {
       handleFeedAnimal(cow.id);
+      //adding something for commit
     });
 
     app.stage.addChild(cowContainer);
@@ -72,18 +74,33 @@ async function addCows() {
 
 async function addSheep() {
   const sheepTexture = await Assets.load("./assets/sheep.png");
+  const sheepContainer = new Container();
 
-  const sheepCount = 5;
+  const allSheep = allAnimals.filter(
+    (animal) => animal.animal.name === "Sheep"
+  );
 
-  for (let i = 0; i < sheepCount; i++) {
+  for (let i = 0; i < allSheep.length; i++) {
     const sheep = new Sprite(sheepTexture);
+    sheep.id = allSheep[i].id;
+    sheep.on("pointerdown", function () {
+      console.log(sheep.id);
+    });
 
+    app.stage.addChild(sheepContainer);
     sheep.anchor.set(0.5);
+
+    sheep.direction = Math.random() * Math.PI * 2;
+    sheep.speed = Math.random();
+    sheep.turningSpeed = Math.random() - 0.8;
 
     sheep.x = 600;
     sheep.y = 400;
 
-    app.stage.addChild(sheep);
+    sheep.interactive = true;
+    sheep.eventMode = "static";
+
+    sheepContainer.addChild(sheep);
 
     sheeps.push(sheep);
   }
@@ -91,18 +108,34 @@ async function addSheep() {
 
 async function addPigs() {
   const pigTexture = await Assets.load("./assets/pig.png");
+  const pigContainer = new Container();
 
-  const pigCount = 5;
+  const allPigs = allAnimals.filter((animal) => animal.animal.name === "Pig");
 
-  for (let i = 0; i < pigCount; i++) {
+  console.log(allPigs);
+
+  for (let i = 0; i < allPigs.length; i++) {
     const pig = new Sprite(pigTexture);
+    pig.id = allPigs[i].id;
+    pig.on("pointerdown", function () {
+      console.log(pig.id);
+    });
+
+    app.stage.addChild(pigContainer);
 
     pig.anchor.set(0.5);
+
+    pig.direction = Math.random() * Math.PI * 2;
+    pig.speed = Math.random();
+    pig.turningSpeed = Math.random() - 0.8;
 
     pig.x = 600;
     pig.y = 200;
 
-    app.stage.addChild(pig);
+    pig.interactive = true;
+    pig.eventMode = "static";
+
+    pigContainer.addChild(pig);
 
     pigs.push(pig);
   }
@@ -111,16 +144,22 @@ async function addChickens() {
   const chickenTexture = await Assets.load("./assets/chicken.png");
   const chickenContainer = new Container();
 
-  const chickenCount = 5;
-
-  for (let i = 0; i < chickenCount; i++) {
+  const allChickens = allAnimals.filter(
+    (animal) => animal.animal.name === "Chicken"
+  );
+  console.log(allChickens);
+  for (let i = 0; i < allChickens.length; i++) {
     const chicken = new Sprite(chickenTexture);
+    chicken.id = allChickens[i].id;
+    chicken.on("pointerdown", function () {
+      console.log(chicken.id);
+    });
     app.stage.addChild(chickenContainer);
 
     chicken.anchor.set(0.5);
 
     chicken.direction = Math.random() * Math.PI * 2;
-    chicken.speed = Math.random() + 1;
+    chicken.speed = Math.random();
     chicken.turningSpeed = Math.random() - 0.8;
 
     chicken.x = 150;
@@ -128,7 +167,10 @@ async function addChickens() {
 
     chicken.scale.set(0.8 + Math.random() * 0.3);
     chickenContainer.addChild(chicken);
-    app.stage.addChild(chicken);
+
+    chicken.interactive = true;
+    chicken.eventMode = "static";
+
     chickens.push(chicken);
   }
 }
@@ -189,6 +231,62 @@ function animateChickens(app, chickens, time) {
   });
 }
 
+function animateSheep(app, sheeps, time) {
+  const delta = time.deltaTime;
+
+  const stagePadding = 100;
+  const boundWidth = app.screen.width + stagePadding * 2;
+  const boundHeight = app.screen.height + stagePadding * 2;
+
+  sheeps.forEach((sheep) => {
+    sheep.direction += sheep.turningSpeed * 0.01;
+    sheep.x += Math.sin(sheep.direction) * sheep.speed;
+    sheep.y += Math.cos(sheep.direction) * sheep.speed;
+    sheep.rotation = -sheep.direction - Math.PI / 2;
+
+    if (sheep.x < -stagePadding) {
+      sheep.x += boundWidth;
+    }
+    if (sheep.x > boundWidth) {
+      sheep.x -= boundWidth;
+    }
+    if (sheep.y < -stagePadding) {
+      sheep.y += boundHeight;
+    }
+    if (sheep.y > boundHeight) {
+      sheep.y -= boundHeight;
+    }
+  });
+}
+
+function animatePigs(app, pigs, time) {
+  const delta = time.deltaTime;
+
+  const stagePadding = 100;
+  const boundWidth = app.screen.width + stagePadding * 2;
+  const boundHeight = app.screen.height + stagePadding * 2;
+
+  pigs.forEach((pig) => {
+    pig.direction += pig.turningSpeed * 0.01;
+    pig.x += Math.sin(pig.direction) * pig.speed;
+    pig.y += Math.cos(pig.direction) * pig.speed;
+    pig.rotation = -pig.direction - Math.PI / 2;
+
+    if (pig.x < -stagePadding) {
+      pig.x += boundWidth;
+    }
+    if (pig.x > boundWidth) {
+      pig.x -= boundWidth;
+    }
+    if (pig.y < -stagePadding) {
+      pig.y += boundHeight;
+    }
+    if (pig.y > boundHeight) {
+      pig.y -= boundHeight;
+    }
+  });
+}
+
 function checkCowCollision(cows) {
   cows.forEach((cow) => {
     if (cow.x < 0) {
@@ -223,4 +321,37 @@ function checkChickenCollision(chickens) {
   });
 }
 
+function checkSheepCollision(sheeps) {
+  sheeps.forEach((sheep) => {
+    if (sheep.x < 400) {
+      sheep.x = 800;
+    }
+    if (sheep.x > 800) {
+      sheep.x = 400;
+    }
+    if (sheep.y < 300) {
+      sheep.y = 600;
+    }
+    if (sheep.y > 600) {
+      sheep.y = 300;
+    }
+  });
+}
+
+function checkPigCollision(pigs) {
+  pigs.forEach((pig) => {
+    if (pig.x < 400) {
+      pig.x = 800;
+    }
+    if (pig.x > 800) {
+      pig.x = 400;
+    }
+    if (pig.y < 0) {
+      pig.y = 300;
+    }
+    if (pig.y > 300) {
+      pig.y = 0;
+    }
+  });
+}
 init();
