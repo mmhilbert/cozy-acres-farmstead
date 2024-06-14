@@ -18,6 +18,8 @@ router.post('/:farmAnimalId/feed', async (req, res) => {
                 }]
             }]
         })
+        farmAnimal.last_fed = dayjs().format('YYYY-MM-DD HH:mm:ss')
+        await farmAnimal.save()
         const value = animal.animal.product.value
         const user = await User.increment({
             total_gold: +value,

@@ -26,12 +26,28 @@ router.get('/:id', async (req, res) => {
 })
 
 //add animal to farm (post request)
-router.post('/:id/farms/:farm_id', async (req, res) => {
-    const { id, farm_id } = req.params
+router.post('/:animalId/farms', async (req, res) => {
+    const { animalId } = req.params
     try {
-        // get animal record from id
-        // randomly pick color for animal
-        // randomly pick gender
+        const user = await User.findByPk(req.session.user_id);
+          
+        const farm = await Farm.findOne({
+            where: { user_id: user.id },
+        });
+
+        if (!farm) {
+            res.status(400).send('farm not found')
+        }
+
+        const animal = await Animal.findByPk(animalId)
+
+        if (animal.cost > user.current_gold) {
+            res.status(400).send("You don't have enough gold to purchase this animal")
+        }
+
+        user.current_gold -= animal.cost
+        await user.save()
+
         const newAnimal = await FarmAnimal.create({
             name: req.body.name,
             farm_id: farm_id,
