@@ -1,6 +1,6 @@
 html,
 body {
-  height: 100%;
+  height: 100vh;
 }
 
 body {
@@ -21,4 +21,10 @@ body {
   left: 0;
   right: 0;
   transform: translateX(calc(50% - 90px));
+}
+
+.game-stats {
+  max-width: 800px;
+  width: 80%;
+  align-self: center;
 }

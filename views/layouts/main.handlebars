@@ -23,18 +23,13 @@
           <li>
             <button class="btn" id="logout">Logout</button>
           </li>
-          {{else}}
-          <li><a href="/login" class="btn btn-primary">Login</a></li>
-          <li>
-            <a href="/signup" class="btn">Sign Up</a>
-          </li>
           {{/if}}
         </ul>
       </div>
     </div>
     
   </header>
-  <main class="container mx-auto px-4">
+  <main class="container flex flex-col mx-auto px-4">
     {{{ body }}}
   </main>
   <footer>
