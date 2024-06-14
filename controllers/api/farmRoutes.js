@@ -31,7 +31,8 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const newFarm = await Farm.create({
-            name: req.body.name
+            name: req.body.name,
+            user_id: req.session.user_id
         })
         res.json(newFarm)
     } catch(err) {
