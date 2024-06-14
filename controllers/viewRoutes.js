@@ -78,6 +78,19 @@ router.get("/farmstore", async (req, res) => {
   }
 });
 
+// profile
+router.get("/profile", async (req, res) => {
+  try {
+    const user = await User.findByPk(req.session.user_id);
+    res.render("profile", {
+      user: user.dataValues,
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.get("/login", (req, res) => {
   if (req.session.logged_in) {
     res.redirect("/");
