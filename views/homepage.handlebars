@@ -1,3 +1,4 @@
+{{#if farm}}
 <div class="flex justify-center">
   <img class="w-44 -mt-12" src="/img/barn.png" alt="" />
 </div>
@@ -5,19 +6,19 @@
 <div class="farm flex justify-center">
 
 </div>
-{{!-- <div class="flex flex-wrap align-center mb-5">
-  {{!-- <div class="w-1/2">
+ <div class="flex flex-wrap align-center bg-white px-3 py-1 mb-5 rounded game-stats">
+   <div class="w-1/2">
     <h2>Greetings, {{user.name}}!</h2>
     <p>{{farm.name}}</p>
     <p># of Animals: {{farm_animals.length}}</p>
-    <p>Gold amount: {{user.current_gold}}</p>
-  </div> --}}
-{{! <div class="w-1/2 flex justify-end">
+    <p>Gold amount: <span id="current-gold-amount">{{user.current_gold}}</span></p>
+  </div> 
+ <div class="w-1/2 flex justify-end">
     <a href="/farmstore" class="btn z-10">Farm Store</a>
   </div>
 
   <div class="w-full justify-center flex" style="background-color: #eee;">
-    <div class="grass-field"> }}
+    <div class="grass-field"> 
 
 {{!-- {{#each farm_animals as |farmAnimal|}}
         <div class="card w-96" data-id="{{farmAnimal.id}}">
@@ -39,6 +40,7 @@
 {{! </div>
   </div>
 </div> }}
+
 <script src="/js/gameHelpers.js"></script>
 <script src="/js/pixi.min.js"></script>
 
@@ -57,3 +59,43 @@
   ]; console.log(allAnimals);
 </script>
 <script type="module" src="/js/farmTesting.js"></script>
+{{else}}
+<div class="flex justify-center my-4">
+  <button id="create-farm" class="btn btn-accent" onclick="create_farm_modal.showModal()">
+    Create Farm
+  </button>
+  <dialog id="create_farm_modal" class="modal">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h2>Name Your Farm</h2>
+    <form id="create_farm_form">
+      <input id="farm_name_input" name="farm_name" type="text" placeholder="Farm Name" class="input input-bordered w-full max-w-xs" required />
+      <button type="submit" class="btn btn-primary">Create Farm</button>
+    </form>
+  </div>
+</dialog>
+</div>
+<script>
+  const handleCreateFarm = async (e) => {
+    e.preventDefault()
+    const farmName = document.getElementById('farm_name_input').value
+    console.log(farmName)
+    await fetch('/api/farms', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: farmName
+      })
+    })
+
+    location.reload();
+  }
+
+  const createFarmForm = document.getElementById('create_farm_form')
+  createFarmForm.addEventListener('submit', handleCreateFarm)
+</script>
+{{/if}}
