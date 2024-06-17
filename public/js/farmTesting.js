@@ -32,9 +32,11 @@ function handleFeedCow(id) {
 }
 
 function handleFeedChicken(id) {
+  console.log(id);
   const chicken = chickens.find((chicken) => chicken.id === id);
   if (chicken.canFeed) {
     handleFeedAnimalFetch(chicken.id);
+    console.log(chicken);
     chicken.lastFed = new Date().getTime();
     console.log("Chicken fed");
     chicken.canFeed = false;
@@ -43,9 +45,12 @@ function handleFeedChicken(id) {
 
 function handleFeedSheep(id) {
   const sheep = sheeps.find((sheep) => sheep.id === id);
+  console.log(id);
   if (sheep.canFeed) {
     handleFeedAnimalFetch(sheep.id);
+    console.log(sheep);
     sheep.lastFed = new Date().getTime();
+    console.log(sheep);
     console.log("Sheep fed");
     sheep.canFeed = false;
   }
@@ -53,8 +58,11 @@ function handleFeedSheep(id) {
 
 function handleFeedPig(id) {
   const pig = pigs.find((pig) => pig.id === id);
-  if (cow.canFeed) {
+  console.log(id);
+  if (pig.canFeed) {
+    console.log(pig);
     handleFeedAnimalFetch(pig.id);
+    console.log(pig);
     pig.lastFed = new Date().getTime();
     console.log("Pig fed");
     pig.canFeed = false;
@@ -64,35 +72,44 @@ function handleFeedPig(id) {
 function checkCanFeedPig() {
   const currentTime = new Date().getTime();
   pigs.forEach((pig) => {
+    //increase hunger level
     pig.hungerLevel++;
-
+    //checking if pig hunger level is greated than max
     if (pig.hungerLevel > 40) {
       handleUnaliveAnimalFetch(pig.id);
       pigsMarkedForDeletion.push(pig.id);
     }
+    // checking if pig can be fed
     if (currentTime - pig.lastFed > 10000) {
       pig.canFeed = true;
     } else {
       pig.canFeed = false;
     }
+    console.log(pig.canFeed);
   });
+  // start te removal process
   pigsToHeaven();
 }
 
 function checkCanFeedSheep() {
   const currentTime = new Date().getTime();
+
   sheeps.forEach((sheep) => {
+    // icrease hunger level
     sheep.hungerLevel++;
+    // checking if sheep hunger level is greater than max
     if (sheep.hungerLevel > 40) {
       handleUnaliveAnimalFetch(sheep.id);
       sheepsMarkedForDeletion.push(sheep.id);
     }
+    // checking if sheep can be fed
     if (currentTime - sheep.lastFed > 10000) {
       sheep.canFeed = true;
     } else {
       sheep.canFeed = false;
     }
   });
+  // start the removal process
   sheepsToHeaven();
 }
 
@@ -127,16 +144,19 @@ function pigsToHeaven() {
 function checkCanFeedChicken() {
   const currentTime = new Date().getTime();
   chickens.forEach((chicken) => {
+    // increase hunger level
     chicken.hungerLevel++;
     if (chicken.hungerLevel > 20) {
       handleUnaliveAnimalFetch(chicken.id);
       chickensMarkedForDeletion.push(chicken.id);
     }
+    // checking if chicken can be fed,
     if (currentTime - chicken.lastFed > 10000) {
       chicken.canFeed = true;
     } else {
       chicken.canFeed = false;
     }
+    // start removal process
     chickensToHeaven();
   });
 }
@@ -191,6 +211,9 @@ function cowsToHeaven() {
 setInterval(() => {
   // handleHungerLevel();
   checkCanFeedCow();
+  checkCanFeedChicken();
+  checkCanFeedSheep();
+  checkCanFeedPig();
 }, 1000);
 
 async function init() {
@@ -274,7 +297,8 @@ async function addSheep() {
     const sheep = new Sprite(sheepTexture);
     sheep.id = allSheep[i].id;
     sheep.on("pointerdown", function () {
-      console.log(sheep.id);
+      handleFeedSheep(sheep.id);
+      sheep.hungerLevel = 0;
     });
 
     app.stage.addChild(sheepContainer);
@@ -317,7 +341,8 @@ async function addPigs() {
     const pig = new Sprite(pigTexture);
     pig.id = allPigs[i].id;
     pig.on("pointerdown", function () {
-      console.log(pig.id);
+      handleFeedPig(pig.id);
+      pig.hungerLevel = 0;
     });
 
     app.stage.addChild(pigContainer);
@@ -361,7 +386,8 @@ async function addChickens() {
     const chicken = new Sprite(chickenTexture);
     chicken.id = allChickens[i].id;
     chicken.on("pointerdown", function () {
-      console.log(chicken.id);
+      handleFeedChicken(chicken.id);
+      chicken.hungerLevel = 0;
     });
     app.stage.addChild(chickenContainer);
 
