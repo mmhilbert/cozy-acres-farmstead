@@ -18,12 +18,6 @@
     "product_id": 3
   },
   {
-    "name": "Goat",
-    "cost": 40,
-    "feed_interval": 20,
-    "product_id": 4
-  },
-  {
     "name": "Sheep",
     "cost": 50,
     "feed_interval": 20,
