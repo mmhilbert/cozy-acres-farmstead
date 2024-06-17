@@ -6,16 +6,15 @@
 <div class="farm flex justify-center">
 
 </div>
- <div class="flex flex-wrap align-center bg-white px-3 py-1 mb-5 rounded game-stats">
+ <div class="flex flex-wrap align-center bg-white px-5 rounded game-stats">
    <div class="w-1/2">
-    <h2>Greetings, {{user.name}}!</h2>
-    <p>{{farm.name}}</p>
+    <h2>Greetings, {{user.name}}! {{farm.name}}</h2>
     <p># of Animals: {{farm_animals.length}}</p>
     <p>Gold amount: <span id="current-gold-amount">{{user.current_gold}}</span></p>
   </div> 
  <div class="w-1/2 flex justify-end">
       {{!-- <a href="/farmstore" class="btn z-10 self-center">Farm Store</a> --}}
-      <a href="/farmstore" class="self-center"><img class="h-16" src="img/farm-store.png"></a>
+      <a href="/farmstore" class="self-center"><img class="h-16" src="img/farmstorebtn.png"></a>
   </div>
 
   <div class="w-full justify-center flex" style="background-color: #eee;">
