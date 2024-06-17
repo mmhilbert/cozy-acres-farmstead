@@ -34,7 +34,7 @@ async function init() {
   });
 }
 async function setup() {
-  await app.init({ backgroundAlpha: 0, width: 800, height: 600 });
+  await app.init({ backgroundAlpha: 0, width: 800, height: 550 });
   document.querySelector(".farm").appendChild(app.canvas);
 }
 

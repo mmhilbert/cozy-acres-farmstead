@@ -11,10 +11,14 @@
 </head>
 
 <body>
-  <header class="display-flex justify-space-between align-center p-2">
-    <div class="navbar bg-base-100">
+  <header class="display-flex justify-space-between align-center px-2">
+    <div class="navbar">
       <div class="flex-1">
-        <a href="/" class="btn btn-ghost text-xl">Cozy Acres Farmstead</a>
+        {{#if logged_in}}
+        <a href="/"><img class="logo px-1" src="img/logo.png"></a>
+        {{else}}
+        <a href="/"><img class="logo2 end-image" src="img/logo.png"></a>
+        {{/if}}
       </div>
       <div class="flex-none">
         <ul class="menu menu-horizontal px-1">

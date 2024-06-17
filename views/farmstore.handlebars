@@ -1,15 +1,14 @@
-<h2>Farm Store</h2>
 <button id='backLogin' class="float-right"><img src="img/backbtn.png"></button>
 
 <div class="mt-5 farm-store">
     <div class="m-5">
-        <ul class="m-5">
+        <ul class="m-5 content">
             {{#each animals as |animal|}}
-                <li class="p-5 animal-row">{{animal.name}}<span class="store-text">${{ animal.cost }}</span>
+                <li class="p-5 animal-row">
                     <button  
-                        class="btn float-right buy-btn" 
+                        class="float-right buy-btn buy-animal" 
                         data-animal-id="{{animal.id}}"
-                    >Buy</button>
+                    >{{ animal.cost }}</button>
                 </li>
             {{/each}}
         </ul>
