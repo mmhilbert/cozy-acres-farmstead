@@ -17,61 +17,15 @@ let cowsMarkedForDeletion = [];
 let chickensMarkedForDeletion = [];
 let sheepsMarkedForDeletion = [];
 let pigsMarkedForDeletion = [];
-let cowForwardSprites = [
-  "./assets/cowSprites/fowardCowOne.png",
-  "./assets/cowSprites/forwardCowTwo.png",
-  "./assets/cowSprites/forwardCowThree.png",
-  "./assets/cowSprites/ForwardCowFour.png",
-];
 
-let cowBackwardSprites = [
-  "./assets/cowSprites/backwardCowOne.png",
-  "./assets/cowSprites/backwardCowTwo.png",
-  "./assets/cowSprites/backwardCowThree.png",
-  "./assets/cowSprites/backwardCowFour.png",
-];
-
-let chickenForwardSprites = [
-  "./assets/chickenSprites/forwardChickenOne.png",
-  "./assets/chickenSprites/forwardChickenTwo.png",
-  "./assets/chickenSprites/forwardChickenThree.png",
-  "./assets/chickenSprites/forwardChickenFour.png",
-];
-
-let chickenBackwardSprites = [
-  "./assets/chickenSprites/backwardChickenOne.png",
-  "./assets/chickenSprites/backwardChickenTwo.png",
-  "./assets/chickenSprites/backwardChickenThree.png",
-  "./assets/chickenSprites/backwardChickenFour.png",
-];
-
-let sheepForwardSprites = [
-  "./assets/sheepSprites/forwardSheepOne.png",
-  "./assets/sheepSprites/forwardSheepTwo.png",
-  "./assets/sheepSprites/forwardSheepThree.png",
-  "./assets/sheepSprites/forwardSheepFour.png",
-];
-
-let sheepBackwardSprites = [
-  "./assets/sheepSprites/backwardSheepOne.png",
-  "./assets/sheepSprites/backwardSheepTwo.png",
-  "./assets/sheepSprites/backwardSheepThree.png",
-  "./assets/sheepSprites/backwardSheepFour.png",
-];
-
-let pigForwardSprites = [
-  "./assets/pigSprites/forwardPigOne.png",
-  "./assets/pigSprites/forwardPigTwo.png",
-  "./assets/pigSprites/forwardPigThree.png",
-  "./assets/pigSprites/forwardPigFour.png",
-];
-
-let pigBackwardSprites = [
-  "./assets/pigSprites/backwardPigOne.png",
-  "./assets/pigSprites/backwardPigTwo.png",
-  "./assets/pigSprites/backwardPigThree.png",
-  "./assets/pigSprites/backwardPigFour.png",
-];
+let cowForwardTextures = [];
+let cowBackwardTextures = [];
+let chickenForwardTextures = [];
+let chickenBackwardTextures = [];
+let sheepForwardTextures = [];
+let sheepBackwardTextures = [];
+let pigForwardTextures = [];
+let pigBackwardTextures = [];
 
 const app = new Application();
 
@@ -274,6 +228,7 @@ setInterval(() => {
 
 async function init() {
   await setup();
+  await preload();
   addCows();
   addSheep();
   addPigs();
@@ -293,19 +248,134 @@ async function init() {
     // console.log(time);
   });
 }
+
+async function preload() {
+  cowForwardTextures.push(
+    await Assets.load("./assets/cowSprites/fowardCowOne.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowOne.png")
+  );
+  cowForwardTextures.push(
+    await Assets.load("./assets/cowSprites/fowardCowTwo.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowTwo.png")
+  );
+  cowForwardTextures.push(
+    await Assets.load("./assets/cowSprites/fowardCowThree.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowThree.png")
+  );
+  cowForwardTextures.push(
+    await Assets.load("./assets/cowSprites/fowardCowFour.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowFour.png")
+  );
+  console.log("pushed cow textures");
+  chickenForwardTextures.push(
+    await Assets.load("./assets/chickenSprites/forwardChickenOne.png")
+  );
+  chickenBackwardTextures.push(
+    await Assets.load("./assets/chickenSprites/backwardChickenOne.png")
+  );
+  chickenForwardTextures.push(
+    await Assets.load("./assets/chickenSprites/forwardChickenTwo.png")
+  );
+  chickenBackwardTextures.push(
+    await Assets.load("./assets/chickenSprites/backwardChickenTwo.png")
+  );
+  chickenForwardTextures.push(
+    await Assets.load("./assets/chickenSprites/forwardChickenThree.png")
+  );
+  chickenBackwardTextures.push(
+    await Assets.load("./assets/chickenSprites/backwardChickenThree.png")
+  );
+  chickenForwardTextures.push(
+    await Assets.load("./assets/chickenSprites/forwardChickenFour.png")
+  );
+  chickenBackwardTextures.push(
+    await Assets.load("./assets/chickenSprites/backwardChickenFour.png")
+  );
+  console.log("pushed chicken textures");
+  sheepForwardTextures.push(
+    await Assets.load("./assets/sheepSprites/forwardSheepOne.png")
+  );
+  sheepBackwardTextures.push(
+    await Assets.load("./assets/sheepSprites/backwardSheepOne.png")
+  );
+  sheepForwardTextures.push(
+    await Assets.load("./assets/sheepSprites/forwardSheepTwo.png")
+  );
+  sheepBackwardTextures.push(
+    await Assets.load("./assets/sheepSprites/backwardSheepTwo.png")
+  );
+  sheepForwardTextures.push(
+    await Assets.load("./assets/sheepSprites/forwardSheepThree.png")
+  );
+  sheepBackwardTextures.push(
+    await Assets.load("./assets/sheepSprites/backwardSheepThree.png")
+  );
+  sheepForwardTextures.push(
+    await Assets.load("./assets/sheepSprites/forwardSheepFour.png")
+  );
+  sheepBackwardTextures.push(
+    await Assets.load("./assets/sheepSprites/backwardSheepFour.png")
+  );
+  console.log("pushed sheep textures");
+  pigForwardTextures.push(
+    await Assets.load("./assets/pigSprites/forwardPigOne.png")
+  );
+  pigBackwardTextures.push(
+    await Assets.load("./assets/pigSprites/backwardPigOne.png")
+  );
+  pigForwardTextures.push(
+    await Assets.load("./assets/pigSprites/forwardPigTwo.png")
+  );
+  pigBackwardTextures.push(
+    await Assets.load("./assets/pigSprites/backwardPigTwo.png")
+  );
+  pigForwardTextures.push(
+    await Assets.load("./assets/pigSprites/forwardPigThree.png")
+  );
+  pigBackwardTextures.push(
+    await Assets.load("./assets/pigSprites/backwardPigThree.png")
+  );
+  pigForwardTextures.push(
+    await Assets.load("./assets/pigSprites/forwardPigFour.png")
+  );
+  pigBackwardTextures.push(
+    await Assets.load("./assets/pigSprites/backwardPigFour.png")
+  );
+  console.log("pushed pig textures");
+}
 async function setup() {
   await app.init({ backgroundAlpha: 0, width: 800, height: 550 });
   document.querySelector(".farm").appendChild(app.canvas);
 }
 
 async function addCows() {
-  const cowTexture = await Assets.load("./assets/cow.png");
+  // const cowForwardTexture = await Assets.load(cowForwardSprites);
+  // const cowBackwardTexture = await Assets.load(cowBackwardSprites);
+  // for (let i = 0; i < cowForwardTexture.length; i++) {
+  //   let texure = PIXI.Texture.from(cowForwardTexture[i]);
+  //   let textureBackward = PIXI.Texture.from(cowBackwardTexture[i]);
+  //   cowForwardTextures.push(texure);
+  //   cowBackwardTextures.push(textureBackward);
+  // }
+  // let AnimatedSprite = new PIXI.AnimatedSprite(cowForwardTextures);
+
   const cowContainer = new Container();
 
   const allCows = allAnimals.filter((animal) => animal.animal.name === "Cow");
 
   for (let i = 0; i < allCows.length; i++) {
-    const cow = new Sprite(cowTexture);
+    const cow = new AnimatedSprite(cowForwardTextures);
+    cow.play();
+    cow.animationSpeed = 0.1;
+    cow.rotation = 0.5;
     cow.id = allCows[i].id;
     cow.on("pointerdown", function () {
       handleFeedCow(cow.id);
@@ -332,7 +402,7 @@ async function addCows() {
 
     cow.isFacingTowards = true;
 
-    cow.scale.set(0.8 + Math.random() * 0.3);
+    cow.scale.set(0.8 + Math.random() * 1);
     cowContainer.addChild(cow);
     cows.push(cow);
 
@@ -479,6 +549,8 @@ async function addChickens() {
 
 function animateCows(app, cows, time) {
   const delta = time.deltaTime;
+  // const fowardTexture = Assets.load("./assets/cowSprites/forwardCowOne.png");
+  // const backwardTexture = Assets.load("./assets/cowSprites/backwardCowOne.png");
 
   const stagePadding = 100;
   const boundWidth = app.screen.width + stagePadding * 2;
@@ -509,6 +581,12 @@ function animateCows(app, cows, time) {
     if (cow.y > boundHeight) {
       cow.y -= boundHeight;
     }
+
+    // if (cow.isFacingTowards) {
+    //   cow.texture(cowForwardTextures[0]);
+    // } else {
+    //   cow.texture(cowBackwardTextures[0]);
+    // }
   });
 }
 
