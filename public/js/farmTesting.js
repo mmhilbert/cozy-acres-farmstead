@@ -91,9 +91,18 @@ function checkCanFeedPig() {
     }
     // checking if pig can be fed
     if (currentTime - pig.lastFed > 10000) {
+      pig.tint = 0xad3535;
       pig.canFeed = true;
     } else {
+      pig.tint = 0xffffff;
       pig.canFeed = false;
+    }
+
+    if (pig.hungerLevel >= 20) {
+      pig.tint = 0xce1212;
+    }
+    if (pig.hungerLevel >= 30) {
+      pig.tint = 0xfd0303;
     }
     console.log(pig.canFeed);
   });
@@ -108,15 +117,24 @@ function checkCanFeedSheep() {
     // icrease hunger level
     sheep.hungerLevel++;
     // checking if sheep hunger level is greater than max
-    if (sheep.hungerLevel > 40) {
+    if (sheep.hungerLevel > 60) {
       handleUnaliveAnimalFetch(sheep.id);
       sheepsMarkedForDeletion.push(sheep.id);
     }
     // checking if sheep can be fed
     if (currentTime - sheep.lastFed > 10000) {
       sheep.canFeed = true;
+      sheep.tint = 0xad3535;
     } else {
+      sheep.tint = 0xffffff;
       sheep.canFeed = false;
+    }
+
+    if (sheep.hungerLevel >= 30) {
+      sheep.tint = 0xce1212;
+    }
+    if (sheep.hungerLevel >= 45) {
+      sheep.tint = 0xfd0303;
     }
   });
   // start the removal process
@@ -161,10 +179,19 @@ function checkCanFeedChicken() {
       chickensMarkedForDeletion.push(chicken.id);
     }
     // checking if chicken can be fed,
-    if (currentTime - chicken.lastFed > 10000) {
+    if (currentTime - chicken.lastFed > 5000) {
       chicken.canFeed = true;
+      chicken.tint = 0xad3535;
     } else {
       chicken.canFeed = false;
+      chicken.tint = 0xffffff;
+    }
+
+    if (chicken.hungerLevel >= 10) {
+      chicken.tint = 0xce1212;
+    }
+    if (chicken.hungerLevel >= 15) {
+      chicken.tint = 0xfd0303;
     }
     // start removal process
     chickensToHeaven();
@@ -191,17 +218,27 @@ function checkCanFeedCow() {
     cow.hungerLevel++;
     //checking if cow hunger level is greated than max
     console.log(cow.hungerLevel);
-    if (cow.hungerLevel > 1000000) {
+    if (cow.hungerLevel > 80) {
       // is_alive = false
       handleUnaliveAnimalFetch(cow.id);
       cowsMarkedForDeletion.push(cow.id);
     }
     // checking if cow can be fed
-    if (currentTime - cow.lastFed > 10000) {
+    if (currentTime - cow.lastFed > 20000) {
       cow.canFeed = true;
+      cow.tint = 0xad3535;
     } else {
       cow.canFeed = false;
+      cow.tint = 0xffffff;
     }
+
+    if (cow.hungerLevel >= 40) {
+      cow.tint = 0xce1212;
+    }
+    if (cow.hungerLevel >= 60) {
+      cow.tint = 0xfd0303;
+    }
+
     console.log(cow.canFeed);
   });
   cowsToHeaven();
