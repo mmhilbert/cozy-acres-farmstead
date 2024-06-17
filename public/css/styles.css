@@ -205,3 +205,8 @@ body {
 .score {
   font-size: 36px;
 }
+
+#create-farm {
+  height: 100%;
+  line-height: 150%;
+}
