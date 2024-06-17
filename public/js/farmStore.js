@@ -9,7 +9,6 @@ const buyButtons = document.querySelectorAll('.buy-btn')
 
 const animalPic = () => {
   const buyBtns = document.querySelectorAll('[data-animal-id]')
-  console.log(buyBtns[0].dataset.animalId)
   let i = 0
   buyBtns.forEach((buyBtn) => {
     buyBtn.classList.add('buy-animal' + i)
@@ -21,7 +20,6 @@ const buyAnimal = async (e) => {
   e.preventDefault()
   let name = prompt("Please enter your animal's name", "Bessy");
   const animalId = e.target.dataset.animalId
-  console.log(animalId)
   const respond = await fetch(`api/animals/${animalId}/farms/`, {
     method: 'POST',
     headers: {

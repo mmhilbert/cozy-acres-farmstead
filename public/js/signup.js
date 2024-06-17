@@ -24,10 +24,10 @@ function signingUp(event) {
       if(response.status === 200) {
         location.href='/'
       } else {
-        alert('Error signing up1')
+        alert('Error signing up')
       }
     })
-    .catch(err => alert('Error signing up2'))
+    .catch(err => alert('Error signing up'))
 }
 
 const backButton = document.getElementById('backLogin')
