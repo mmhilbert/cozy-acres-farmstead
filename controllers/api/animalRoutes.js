@@ -36,13 +36,15 @@ router.post('/:animalId/farms', async (req, res) => {
         });
 
         if (!farm) {
-            res.status(400).send('farm not found')
+            res.status(400).json({ message: 'farm not found' });
+            return;
         }
 
         const animal = await Animal.findByPk(animalId)
 
         if (animal.cost > user.current_gold) {
-            res.status(400).send("You don't have enough gold to purchase this animal")
+            res.status(400).json({ message: "You don't have enough gold to purchase this animal" });
+            return;
         }
 
         user.current_gold -= animal.cost
@@ -50,8 +52,8 @@ router.post('/:animalId/farms', async (req, res) => {
 
         const newAnimal = await FarmAnimal.create({
             name: req.body.name,
-            farm_id: farm_id,
-            animal_id: id
+            farm_id: farm.id,
+            animal_id: animalId
         })
         res.json(newAnimal)
     } catch(err) {

@@ -66,11 +66,12 @@ router.get("/", withAuth, async (req, res) => {
 
 router.get("/farmstore", async (req, res) => {
   try {
-    const animals = await Animal.findAll();
+    let animals = await Animal.findAll();
+    animals = animals.map((animal) => animal.toJSON());
     const user = await User.findByPk(req.session.user_id);
     res.render("farmstore", {
       user: user.dataValues,
-      animals: animals.dataValues,
+      animals: animals,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
@@ -81,9 +82,20 @@ router.get("/farmstore", async (req, res) => {
 // profile
 router.get("/profile", async (req, res) => {
   try {
-    const user = await User.findByPk(req.session.user_id);
+    const user = await User.findByPk(req.session.user_id); 
+    const farm = await Farm.findOne({ where: {user_id: user.id} })
+    let animalsInHeaven = await FarmAnimal.findAll({ 
+      where: {
+        is_alive: true,
+        farm_id: farm.id
+      } 
+    })
+    animalsInHeaven = animalsInHeaven.map((animal) => animal.toJSON());
+    console.log(animalsInHeaven)
     res.render("profile", {
       user: user.dataValues,
+      farm: farm.dataValues,
+      animalsInHeaven: animalsInHeaven,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
