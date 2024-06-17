@@ -154,6 +154,7 @@ function sheepsToHeaven() {
   });
 }
 
+// for commit
 function pigsToHeaven() {
   pigsMarkedForDeletion.forEach((id) => {
     pigs = pigs.filter((pig) => {
