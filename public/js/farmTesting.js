@@ -402,7 +402,7 @@ async function addCows() {
 
     cow.isFacingTowards = true;
 
-    cow.scale.set(0.8 + Math.random() * 1);
+    cow.scale.set(2 + Math.random() * 1.25);
     cowContainer.addChild(cow);
     cows.push(cow);
 
@@ -421,6 +421,8 @@ async function addSheep() {
 
   for (let i = 0; i < allSheep.length; i++) {
     const sheep = new AnimatedSprite(sheepForwardTextures);
+    sheep.play();
+    sheep.animationSpeed = 0.1;
     sheep.id = allSheep[i].id;
     sheep.on("pointerdown", function () {
       handleFeedSheep(sheep.id);
@@ -433,6 +435,8 @@ async function addSheep() {
     sheep.direction = Math.random() * Math.PI * 2;
     sheep.speed = Math.random();
     sheep.turningSpeed = Math.random() - 0.8;
+
+    sheep.scale.set(2 + Math.random() * 1.25);
 
     sheep.x = 600;
     sheep.y = 400;
@@ -456,7 +460,6 @@ async function addSheep() {
 }
 
 async function addPigs() {
-  const pigTexture = await Assets.load("./assets/pig.png");
   const pigContainer = new Container();
 
   const allPigs = allAnimals.filter((animal) => animal.animal.name === "Pig");
@@ -464,7 +467,9 @@ async function addPigs() {
   // console.log(allPigs);
 
   for (let i = 0; i < allPigs.length; i++) {
-    const pig = new Sprite(pigTexture);
+    const pig = new AnimatedSprite(pigForwardTextures);
+    pig.play();
+    pig.animationSpeed = 0.1;
     pig.id = allPigs[i].id;
     pig.on("pointerdown", function () {
       handleFeedPig(pig.id);
@@ -478,6 +483,8 @@ async function addPigs() {
     pig.direction = Math.random() * Math.PI * 2;
     pig.speed = Math.random();
     pig.turningSpeed = Math.random() - 0.8;
+
+    pig.scale.set(2 + Math.random() * 1.25);
 
     pig.x = 600;
     pig.y = 200;
@@ -501,7 +508,6 @@ async function addPigs() {
   }
 }
 async function addChickens() {
-  const chickenTexture = await Assets.load("./assets/chicken.png");
   const chickenContainer = new Container();
 
   const allChickens = allAnimals.filter(
@@ -509,7 +515,9 @@ async function addChickens() {
   );
   // console.log(allChickens);
   for (let i = 0; i < allChickens.length; i++) {
-    const chicken = new Sprite(chickenTexture);
+    const chicken = new AnimatedSprite(chickenForwardTextures);
+    chicken.play();
+    chicken.animationSpeed = 0.1;
     chicken.id = allChickens[i].id;
     chicken.on("pointerdown", function () {
       handleFeedChicken(chicken.id);
@@ -537,7 +545,7 @@ async function addChickens() {
 
     chicken.isFacingTowards = true;
 
-    chicken.scale.set(0.8 + Math.random() * 0.3);
+    chicken.scale.set(2 + Math.random() * 1.25);
     chickenContainer.addChild(chicken);
 
     chicken.interactive = true;
@@ -570,7 +578,6 @@ function animateCows(app, cows, time) {
 
     cow.isFacingTowards = cow.y - cow.previousY > 0;
 
-    //TODO - add sprite change based on direction
     if (cow.x < -stagePadding) {
       cow.x += boundWidth;
     }
@@ -609,25 +616,15 @@ function animateChickens(app, chickens, time) {
     chicken.previousX = chicken.x;
     chicken.previousY = chicken.y;
 
-    // if(chicken.y - chicken.previousY > 0) {
-
-    // }
-
     chicken.x += Math.sin(chicken.direction) * chicken.speed;
     chicken.y += Math.cos(chicken.direction) * chicken.speed;
 
+    const previousFacing = chicken.isFacingTowards;
+
     chicken.isFacingTowards = chicken.y - chicken.previousY > 0;
 
-    // console.log(
-    //   `Chicken is facing towards: ${chicken.isFacingTowards}, ${chicken.x}, ${chicken.y}`
-    // );
-
-    // console.log(chicken.isFacingTowards, chicken.y - chicken.previousY);
-    // console.log(chicken.direction);
     chicken.rotation = -chicken.direction - Math.PI / 2;
-    // console.log(chicken.direction);
 
-    //TODO - add sprite change based on direction
     if (chicken.x < -stagePadding) {
       chicken.x += boundWidth;
     }
@@ -639,6 +636,12 @@ function animateChickens(app, chickens, time) {
     }
     if (chicken.y > boundHeight) {
       chicken.y -= boundHeight;
+    }
+    if (chicken.isFacingTowards !== previousFacing) {
+      chicken.textures = chicken.isFacingTowards
+        ? chickenForwardTextures
+        : chickenBackwardTextures;
+      chicken.gotoAndPlay(0);
     }
 
     // console.log(chicken.y);
@@ -710,14 +713,9 @@ function animatePigs(app, pigs, time) {
     pig.x += Math.sin(pig.direction) * pig.speed;
     pig.y += Math.cos(pig.direction) * pig.speed;
     pig.rotation = -pig.direction - Math.PI / 2;
-
+    const previousFacing = pig.isFacingTowards;
     pig.isFacingTowards = pig.y - pig.previousY > 0;
 
-    //TODO - add sprite change based on direction
-
-    // console.log(
-    //   `Pig is facing towards: ${pig.isFacingTowards}, ${pig.x}, ${pig.y}`
-    // );
     if (pig.x < -stagePadding) {
       pig.x += boundWidth;
     }
@@ -729,6 +727,13 @@ function animatePigs(app, pigs, time) {
     }
     if (pig.y > boundHeight) {
       pig.y -= boundHeight;
+    }
+
+    if (pig.isFacingTowards !== previousFacing) {
+      pig.textures = pig.isFacingTowards
+        ? pigForwardTextures
+        : pigBackwardTextures;
+      pig.gotoAndPlay(0);
     }
   });
 }
