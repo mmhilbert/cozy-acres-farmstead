@@ -31,5 +31,3 @@ const buyAnimal = async (e) => {
 Array.from(buyButtons).forEach(button => {
   button.addEventListener('click', buyAnimal)
 })
-
-animalPic()

@@ -86,7 +86,7 @@ router.get("/profile", async (req, res) => {
     const farm = await Farm.findOne({ where: {user_id: user.id} })
     let animalsInHeaven = await FarmAnimal.findAll({ 
       where: {
-        is_alive: true,
+        is_alive: false,
         farm_id: farm.id
       } 
     })
