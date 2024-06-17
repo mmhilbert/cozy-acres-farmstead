@@ -47,8 +47,20 @@ function checkCanFeedChicken() {
   const currentTime = new Date().getTime();
   chickens.forEach((chicken) => {
     chicken.hungerLevel++;
+    if(chicken.hungerLevel > 20) {
+      handleUnaliveAnimalFetch(chicken.id);
+      chickensMarkedForDeletion.push(chicken.id);
+    }
+    if (currentTime - chicken.lastFed > 10000) {
+      chicken.canFeed = true;
+    } else {
+      chicken.canFeed = false;
+    }
+    chickensToHeaven()
   });
 }
+
+function 
 
 function checkCanFeedCow() {
   const currentTime = new Date().getTime();
@@ -57,7 +69,7 @@ function checkCanFeedCow() {
     cow.hungerLevel++;
     //checking if cow hunger level is greated than max
     console.log(cow.hungerLevel);
-    if (cow.hungerLevel > 20) {
+    if (cow.hungerLevel > 80) {
       // is_alive = false
       handleUnaliveAnimalFetch(cow.id);
       cowsMarkedForDeletion.push(cow.id);
