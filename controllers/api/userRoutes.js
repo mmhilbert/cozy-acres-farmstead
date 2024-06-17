@@ -77,4 +77,39 @@ router.get('/:id', async (req, res) => {
   }
 })
 
+router.post('/score', async (req, res) => {
+  try {
+    const users = await User.findAll()
+    let userScore = []
+    for (const user of users){
+      const obj = {}
+      const userName = user.dataValues.name
+      const totalScore = user.dataValues.total_gold
+      userScore.push({
+        name: userName, score: totalScore
+      })
+    }
+    userScore.sort((a,b) => b.score - a.score)
+    const topFive = userScore.slice(0,5)
+    res.status(200).json(topFive);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+})
+
+router.post('/scoreall', async (req, res) => {
+  try {
+    const users = await User.findAll()
+    let userScore = 0
+    for (const user of users){
+      const obj = {}
+      const totalScore = user.dataValues.total_gold
+      userScore = userScore + totalScore
+    }
+    res.status(200).json(userScore);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+})
+
 module.exports = router;

@@ -11,7 +11,6 @@ const buyAnimal = async (e) => {
   e.preventDefault()
   let name = prompt("Please enter your animal's name", "Bessy");
   const animalId = e.target.dataset.animalId
-  console.log(animalId)
   const respond = await fetch(`api/animals/${animalId}/farms/`, {
     method: 'POST',
     headers: {

@@ -147,3 +147,61 @@ body {
 .buy-animal-Sheep {
   background-image: url("../img/buysheep.png");
 }
+
+#topScores {
+  font-size: 55px;
+  font-weight: bold;
+  padding-top: 2%;
+  padding-left: 5%;
+  text-decoration: underline;
+}
+
+#worldHunger {
+  padding-top: 2%;
+  font-size: 55px;
+  font-weight: bold;
+  display: flex;
+  float: left;
+}
+
+.center-image-score {  
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+#allScore {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100px;
+  height: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#percentScore {
+  background: black;
+  padding: 1%;
+  vertical-align: bottom;
+}
+
+#numberPercent {
+  font-size: 35px;
+  background-image: url(../img/barnbackground.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding: 5.5%;
+  margin-bottom: 3%;
+}
+
+#totalScores {
+  width: 35%;
+  text-align: center;
+}
+
+.score {
+  font-size: 36px;
+}

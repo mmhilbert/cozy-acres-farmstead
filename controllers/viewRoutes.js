@@ -103,6 +103,19 @@ router.get("/profile", async (req, res) => {
   }
 });
 
+router.get("/score", async (req, res) => {
+  try {
+    const user = await User.findByPk(req.session.user_id);
+    res.render("score", {
+      user: user.dataValues,
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    console.log("I did it")
+    res.status(500).json('hello it me');
+  }
+});
+
 router.get("/login", (req, res) => {
   if (req.session.logged_in) {
     res.redirect("/");
