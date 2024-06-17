@@ -41,13 +41,94 @@ function handleFeedChicken(id) {
   }
 }
 
+function handleFeedSheep(id) {
+  const sheep = sheeps.find((sheep) => sheep.id === id);
+  if (sheep.canFeed) {
+    handleFeedAnimalFetch(sheep.id);
+    sheep.lastFed = new Date().getTime();
+    console.log("Sheep fed");
+    sheep.canFeed = false;
+  }
+}
+
+function handleFeedPig(id) {
+  const pig = pigs.find((pig) => pig.id === id);
+  if (cow.canFeed) {
+    handleFeedAnimalFetch(pig.id);
+    pig.lastFed = new Date().getTime();
+    console.log("Pig fed");
+    pig.canFeed = false;
+  }
+}
+
+function checkCanFeedPig() {
+  const currentTime = new Date().getTime();
+  pigs.forEach((pig) => {
+    pig.hungerLevel++;
+
+    if (pig.hungerLevel > 40) {
+      handleUnaliveAnimalFetch(pig.id);
+      pigsMarkedForDeletion.push(pig.id);
+    }
+    if (currentTime - pig.lastFed > 10000) {
+      pig.canFeed = true;
+    } else {
+      pig.canFeed = false;
+    }
+  });
+  pigsToHeaven();
+}
+
+function checkCanFeedSheep() {
+  const currentTime = new Date().getTime();
+  sheeps.forEach((sheep) => {
+    sheep.hungerLevel++;
+    if (sheep.hungerLevel > 40) {
+      handleUnaliveAnimalFetch(sheep.id);
+      sheepsMarkedForDeletion.push(sheep.id);
+    }
+    if (currentTime - sheep.lastFed > 10000) {
+      sheep.canFeed = true;
+    } else {
+      sheep.canFeed = false;
+    }
+  });
+  sheepsToHeaven();
+}
+
+function sheepsToHeaven() {
+  sheepsMarkedForDeletion.forEach((id) => {
+    sheeps = sheeps.filter((sheep) => {
+      const sheepCanStayAlive = sheep.id !== id;
+      if (!sheepCanStayAlive) {
+        app.stage.removeChild(sheep);
+        sheep.destroy();
+      }
+      return sheepCanStayAlive;
+    });
+  });
+}
+
+function pigsToHeaven() {
+  pigsMarkedForDeletion.forEach((id) => {
+    pigs = pigs.filter((pig) => {
+      const pigCanStayAlive = pig.id !== id;
+      if (!pigCanStayAlive) {
+        app.stage.removeChild(pig);
+        pig.destroy();
+      }
+      return pigCanStayAlive;
+    });
+  });
+}
+
 // function handleHungerLevel() {}
 
 function checkCanFeedChicken() {
   const currentTime = new Date().getTime();
   chickens.forEach((chicken) => {
     chicken.hungerLevel++;
-    if(chicken.hungerLevel > 20) {
+    if (chicken.hungerLevel > 20) {
       handleUnaliveAnimalFetch(chicken.id);
       chickensMarkedForDeletion.push(chicken.id);
     }
@@ -56,11 +137,22 @@ function checkCanFeedChicken() {
     } else {
       chicken.canFeed = false;
     }
-    chickensToHeaven()
+    chickensToHeaven();
   });
 }
 
-function 
+function chickensToHeaven() {
+  chickensMarkedForDeletion.forEach((id) => {
+    chickens = chickens.filter((chicken) => {
+      const chickenCanStayAlive = chicken.id !== id;
+      if (!chickenCanStayAlive) {
+        app.stage.removeChild(chicken);
+        chicken.destroy();
+      }
+      return chickenCanStayAlive;
+    });
+  });
+}
 
 function checkCanFeedCow() {
   const currentTime = new Date().getTime();
