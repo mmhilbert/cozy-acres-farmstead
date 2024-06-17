@@ -6,6 +6,7 @@ const {
   Texture,
   TilingSprite,
   DisplacementFilter,
+  AnimatedSprite,
 } = window.PIXI;
 
 let cows = [];
@@ -16,6 +17,61 @@ let cowsMarkedForDeletion = [];
 let chickensMarkedForDeletion = [];
 let sheepsMarkedForDeletion = [];
 let pigsMarkedForDeletion = [];
+let cowForwardSprites = [
+  "./assets/cowSprites/fowardCowOne.png",
+  "./assets/cowSprites/forwardCowTwo.png",
+  "./assets/cowSprites/forwardCowThree.png",
+  "./assets/cowSprites/ForwardCowFour.png",
+];
+
+let cowBackwardSprites = [
+  "./assets/cowSprites/backwardCowOne.png",
+  "./assets/cowSprites/backwardCowTwo.png",
+  "./assets/cowSprites/backwardCowThree.png",
+  "./assets/cowSprites/backwardCowFour.png",
+];
+
+let chickenForwardSprites = [
+  "./assets/chickenSprites/forwardChickenOne.png",
+  "./assets/chickenSprites/forwardChickenTwo.png",
+  "./assets/chickenSprites/forwardChickenThree.png",
+  "./assets/chickenSprites/forwardChickenFour.png",
+];
+
+let chickenBackwardSprites = [
+  "./assets/chickenSprites/backwardChickenOne.png",
+  "./assets/chickenSprites/backwardChickenTwo.png",
+  "./assets/chickenSprites/backwardChickenThree.png",
+  "./assets/chickenSprites/backwardChickenFour.png",
+];
+
+let sheepForwardSprites = [
+  "./assets/sheepSprites/forwardSheepOne.png",
+  "./assets/sheepSprites/forwardSheepTwo.png",
+  "./assets/sheepSprites/forwardSheepThree.png",
+  "./assets/sheepSprites/forwardSheepFour.png",
+];
+
+let sheepBackwardSprites = [
+  "./assets/sheepSprites/backwardSheepOne.png",
+  "./assets/sheepSprites/backwardSheepTwo.png",
+  "./assets/sheepSprites/backwardSheepThree.png",
+  "./assets/sheepSprites/backwardSheepFour.png",
+];
+
+let pigForwardSprites = [
+  "./assets/pigSprites/forwardPigOne.png",
+  "./assets/pigSprites/forwardPigTwo.png",
+  "./assets/pigSprites/forwardPigThree.png",
+  "./assets/pigSprites/forwardPigFour.png",
+];
+
+let pigBackwardSprites = [
+  "./assets/pigSprites/backwardPigOne.png",
+  "./assets/pigSprites/backwardPigTwo.png",
+  "./assets/pigSprites/backwardPigThree.png",
+  "./assets/pigSprites/backwardPigFour.png",
+];
 
 const app = new Application();
 
