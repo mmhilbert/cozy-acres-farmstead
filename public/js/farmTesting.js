@@ -610,7 +610,7 @@ function animateCows(app, cows, time) {
 
     cow.x += Math.sin(cow.direction) * cow.speed;
     cow.y += Math.cos(cow.direction) * cow.speed;
-    cow.rotation = -cow.direction - Math.PI / 2;
+    cow.rotation = 0; //-(cow.direction - Math.PI / 2);
 
     const previousFacing = cow.isFacingTowards;
 
@@ -661,7 +661,7 @@ function animateChickens(app, chickens, time) {
 
     chicken.isFacingTowards = chicken.y - chicken.previousY > 0;
 
-    chicken.rotation = -chicken.direction - Math.PI / 2;
+    chicken.rotation = 0;
 
     if (chicken.x < -stagePadding) {
       chicken.x += boundWidth;
@@ -701,7 +701,7 @@ function animateSheep(app, sheeps, time) {
 
     sheep.x += Math.sin(sheep.direction) * sheep.speed;
     sheep.y += Math.cos(sheep.direction) * sheep.speed;
-    sheep.rotation = -sheep.direction - Math.PI / 2;
+    sheep.rotation = 0;
 
     const previousFacing = sheep.isFacingTowards;
 
@@ -750,7 +750,7 @@ function animatePigs(app, pigs, time) {
 
     pig.x += Math.sin(pig.direction) * pig.speed;
     pig.y += Math.cos(pig.direction) * pig.speed;
-    pig.rotation = -pig.direction - Math.PI / 2;
+    pig.rotation = 0;
     const previousFacing = pig.isFacingTowards;
     pig.isFacingTowards = pig.y - pig.previousY > 0;
 
