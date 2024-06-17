@@ -6,7 +6,7 @@
             {{#each animals as |animal|}}
                 <li class="p-5 animal-row">
                     <button  
-                        class="float-right buy-btn buy-animal" 
+                        class="float-right buy-btn buy-animal buy-animal-{{animal.name}}" 
                         data-animal-id="{{animal.id}}"
                     >{{ animal.cost }}</button>
                 </li>

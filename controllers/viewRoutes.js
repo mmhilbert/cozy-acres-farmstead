@@ -36,7 +36,7 @@ router.get("/", withAuth, async (req, res) => {
     let farm_animals = []
     if (farm) {
       const farmAnimals = await FarmAnimal.findAll({
-        where: { farm_id: farm.id },
+        where: { farm_id: farm.id, is_alive: true},
         include: [
           {
             model: Animal,
@@ -86,7 +86,7 @@ router.get("/profile", async (req, res) => {
     const farm = await Farm.findOne({ where: {user_id: user.id} })
     let animalsInHeaven = await FarmAnimal.findAll({ 
       where: {
-        is_alive: true,
+        is_alive: false,
         farm_id: farm.id
       } 
     })

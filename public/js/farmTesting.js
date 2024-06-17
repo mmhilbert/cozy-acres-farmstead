@@ -6,21 +6,272 @@ const {
   Texture,
   TilingSprite,
   DisplacementFilter,
+  AnimatedSprite,
 } = window.PIXI;
 
-const cows = [];
-const chickens = [];
-const sheeps = [];
-const pigs = [];
+let cows = [];
+let chickens = [];
+let sheeps = [];
+let pigs = [];
+let cowsMarkedForDeletion = [];
+let chickensMarkedForDeletion = [];
+let sheepsMarkedForDeletion = [];
+let pigsMarkedForDeletion = [];
+
+let cowForwardTextures = [];
+let cowBackwardTextures = [];
+let chickenForwardTextures = [];
+let chickenBackwardTextures = [];
+let sheepForwardTextures = [];
+let sheepBackwardTextures = [];
+let pigForwardTextures = [];
+let pigBackwardTextures = [];
 
 const app = new Application();
 
+function handleFeedCow(id) {
+  console.log(id);
+  const cow = cows.find((cow) => cow.id === id);
+  if (cow.canFeed) {
+    handleFeedAnimalFetch(cow.id);
+    console.log(cow);
+    cow.lastFed = new Date().getTime();
+    console.log("Cow fed");
+    cow.canFeed = false;
+  }
+}
+
+function handleFeedChicken(id) {
+  console.log(id);
+  const chicken = chickens.find((chicken) => chicken.id === id);
+  if (chicken.canFeed) {
+    handleFeedAnimalFetch(chicken.id);
+    console.log(chicken);
+    chicken.lastFed = new Date().getTime();
+    console.log("Chicken fed");
+    chicken.canFeed = false;
+  }
+}
+
+function handleFeedSheep(id) {
+  const sheep = sheeps.find((sheep) => sheep.id === id);
+  console.log(id);
+  if (sheep.canFeed) {
+    handleFeedAnimalFetch(sheep.id);
+    console.log(sheep);
+    sheep.lastFed = new Date().getTime();
+    console.log(sheep);
+    console.log("Sheep fed");
+    sheep.canFeed = false;
+  }
+}
+
+function handleFeedPig(id) {
+  const pig = pigs.find((pig) => pig.id === id);
+  console.log(id);
+  if (pig.canFeed) {
+    console.log(pig);
+    handleFeedAnimalFetch(pig.id);
+    console.log(pig);
+    pig.lastFed = new Date().getTime();
+    console.log("Pig fed");
+    pig.canFeed = false;
+  }
+}
+
+function checkCanFeedPig() {
+  const currentTime = new Date().getTime();
+  pigs.forEach((pig) => {
+    //increase hunger level
+    pig.hungerLevel++;
+    //checking if pig hunger level is greated than max
+    if (pig.hungerLevel > 40) {
+      handleUnaliveAnimalFetch(pig.id);
+      pigsMarkedForDeletion.push(pig.id);
+    }
+    // checking if pig can be fed
+    if (currentTime - pig.lastFed > 10000) {
+      pig.tint = 0xad3535;
+      pig.canFeed = true;
+    } else {
+      pig.tint = 0xffffff;
+      pig.canFeed = false;
+    }
+
+    if (pig.hungerLevel >= 20) {
+      pig.tint = 0xce1212;
+    }
+    if (pig.hungerLevel >= 30) {
+      pig.tint = 0xfd0303;
+    }
+    console.log(pig.canFeed);
+  });
+  // start te removal process
+  pigsToHeaven();
+}
+
+function checkCanFeedSheep() {
+  const currentTime = new Date().getTime();
+
+  sheeps.forEach((sheep) => {
+    // icrease hunger level
+    sheep.hungerLevel++;
+    // checking if sheep hunger level is greater than max
+    if (sheep.hungerLevel > 60) {
+      handleUnaliveAnimalFetch(sheep.id);
+      sheepsMarkedForDeletion.push(sheep.id);
+    }
+    // checking if sheep can be fed
+    if (currentTime - sheep.lastFed > 10000) {
+      sheep.canFeed = true;
+      sheep.tint = 0xad3535;
+    } else {
+      sheep.tint = 0xffffff;
+      sheep.canFeed = false;
+    }
+
+    if (sheep.hungerLevel >= 30) {
+      sheep.tint = 0xce1212;
+    }
+    if (sheep.hungerLevel >= 45) {
+      sheep.tint = 0xfd0303;
+    }
+  });
+  // start the removal process
+  sheepsToHeaven();
+}
+// added for commit
+function sheepsToHeaven() {
+  sheepsMarkedForDeletion.forEach((id) => {
+    sheeps = sheeps.filter((sheep) => {
+      const sheepCanStayAlive = sheep.id !== id;
+      if (!sheepCanStayAlive) {
+        app.stage.removeChild(sheep);
+        sheep.destroy();
+      }
+      return sheepCanStayAlive;
+    });
+  });
+}
+
+// for commit
+function pigsToHeaven() {
+  pigsMarkedForDeletion.forEach((id) => {
+    pigs = pigs.filter((pig) => {
+      const pigCanStayAlive = pig.id !== id;
+      if (!pigCanStayAlive) {
+        app.stage.removeChild(pig);
+        pig.destroy();
+      }
+      return pigCanStayAlive;
+    });
+  });
+}
+
+// function handleHungerLevel() {}
+
+function checkCanFeedChicken() {
+  const currentTime = new Date().getTime();
+  chickens.forEach((chicken) => {
+    // increase hunger level
+    chicken.hungerLevel++;
+    if (chicken.hungerLevel > 20) {
+      handleUnaliveAnimalFetch(chicken.id);
+      chickensMarkedForDeletion.push(chicken.id);
+    }
+    // checking if chicken can be fed,
+    if (currentTime - chicken.lastFed > 5000) {
+      chicken.canFeed = true;
+      chicken.tint = 0xad3535;
+    } else {
+      chicken.canFeed = false;
+      chicken.tint = 0xffffff;
+    }
+
+    if (chicken.hungerLevel >= 10) {
+      chicken.tint = 0xce1212;
+    }
+    if (chicken.hungerLevel >= 15) {
+      chicken.tint = 0xfd0303;
+    }
+    // start removal process
+    chickensToHeaven();
+  });
+}
+
+function chickensToHeaven() {
+  chickensMarkedForDeletion.forEach((id) => {
+    chickens = chickens.filter((chicken) => {
+      const chickenCanStayAlive = chicken.id !== id;
+      if (!chickenCanStayAlive) {
+        app.stage.removeChild(chicken);
+        chicken.destroy();
+      }
+      return chickenCanStayAlive;
+    });
+  });
+}
+
+function checkCanFeedCow() {
+  const currentTime = new Date().getTime();
+  cows.forEach((cow) => {
+    //increase hunger level
+    cow.hungerLevel++;
+    //checking if cow hunger level is greated than max
+    console.log(cow.hungerLevel);
+    if (cow.hungerLevel > 80) {
+      // is_alive = false
+      handleUnaliveAnimalFetch(cow.id);
+      cowsMarkedForDeletion.push(cow.id);
+    }
+    // checking if cow can be fed
+    if (currentTime - cow.lastFed > 20000) {
+      cow.canFeed = true;
+      cow.tint = 0xad3535;
+    } else {
+      cow.canFeed = false;
+      cow.tint = 0xffffff;
+    }
+
+    if (cow.hungerLevel >= 40) {
+      cow.tint = 0xce1212;
+    }
+    if (cow.hungerLevel >= 60) {
+      cow.tint = 0xfd0303;
+    }
+
+    console.log(cow.canFeed);
+  });
+  cowsToHeaven();
+}
+function cowsToHeaven() {
+  cowsMarkedForDeletion.forEach((id) => {
+    cows = cows.filter((cow) => {
+      const cowCanStayAlive = cow.id !== id;
+      if (!cowCanStayAlive) {
+        app.stage.removeChild(cow);
+        cow.destroy();
+      }
+      return cowCanStayAlive;
+    });
+  });
+}
+setInterval(() => {
+  // handleHungerLevel();
+  checkCanFeedCow();
+  checkCanFeedChicken();
+  checkCanFeedSheep();
+  checkCanFeedPig();
+}, 1000);
+
 async function init() {
   await setup();
+  await preload();
   addCows();
   addSheep();
   addPigs();
   addChickens();
+  console.log(allAnimals);
 
   app.ticker.add((time) => {
     animateCows(app, cows, time);
@@ -31,7 +282,112 @@ async function init() {
     checkChickenCollision(chickens);
     checkSheepCollision(sheeps);
     checkPigCollision(pigs);
+    // setInterval(testIntervals, 1000);
+    // console.log(time);
   });
+}
+
+async function preload() {
+  cowForwardTextures.push(
+    await Assets.load("./assets/cowSprites/fowardCowOne.png")
+  );
+  cowForwardTextures.push(
+    await Assets.load("./assets/cowSprites/fowardCowTwo.png")
+  );
+  cowForwardTextures.push(
+    await Assets.load("./assets/cowSprites/fowardCowThree.png")
+  );
+  cowForwardTextures.push(
+    await Assets.load("./assets/cowSprites/fowardCowFour.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowOne.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowTwo.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowThree.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowFour.png")
+  );
+  console.log("pushed cow textures");
+  chickenForwardTextures.push(
+    await Assets.load("./assets/chickenSprites/forwardChickenOne.png")
+  );
+  chickenBackwardTextures.push(
+    await Assets.load("./assets/chickenSprites/backwardChickenOne.png")
+  );
+  chickenForwardTextures.push(
+    await Assets.load("./assets/chickenSprites/forwardChickenTwo.png")
+  );
+  chickenBackwardTextures.push(
+    await Assets.load("./assets/chickenSprites/backwardChickenTwo.png")
+  );
+  chickenForwardTextures.push(
+    await Assets.load("./assets/chickenSprites/forwardChickenThree.png")
+  );
+  chickenBackwardTextures.push(
+    await Assets.load("./assets/chickenSprites/backwardChickenThree.png")
+  );
+  chickenForwardTextures.push(
+    await Assets.load("./assets/chickenSprites/forwardChickenFour.png")
+  );
+  chickenBackwardTextures.push(
+    await Assets.load("./assets/chickenSprites/backwardChickenFour.png")
+  );
+  console.log("pushed chicken textures");
+  sheepForwardTextures.push(
+    await Assets.load("./assets/sheepSprites/forwardSheepOne.png")
+  );
+  sheepBackwardTextures.push(
+    await Assets.load("./assets/sheepSprites/backwardSheepOne.png")
+  );
+  sheepForwardTextures.push(
+    await Assets.load("./assets/sheepSprites/forwardSheepTwo.png")
+  );
+  sheepBackwardTextures.push(
+    await Assets.load("./assets/sheepSprites/backwardSheepTwo.png")
+  );
+  sheepForwardTextures.push(
+    await Assets.load("./assets/sheepSprites/forwardSheepThree.png")
+  );
+  sheepBackwardTextures.push(
+    await Assets.load("./assets/sheepSprites/backwardSheepThree.png")
+  );
+  sheepForwardTextures.push(
+    await Assets.load("./assets/sheepSprites/forwardSheepFour.png")
+  );
+  sheepBackwardTextures.push(
+    await Assets.load("./assets/sheepSprites/backwardSheepFour.png")
+  );
+  console.log("pushed sheep textures");
+  pigForwardTextures.push(
+    await Assets.load("./assets/pigSprites/forwardPigOne.png")
+  );
+  pigBackwardTextures.push(
+    await Assets.load("./assets/pigSprites/backwardPigOne.png")
+  );
+  pigForwardTextures.push(
+    await Assets.load("./assets/pigSprites/forwardPigTwo.png")
+  );
+  pigBackwardTextures.push(
+    await Assets.load("./assets/pigSprites/backwardPigTwo.png")
+  );
+  pigForwardTextures.push(
+    await Assets.load("./assets/pigSprites/forwardPigThree.png")
+  );
+  pigBackwardTextures.push(
+    await Assets.load("./assets/pigSprites/backwardPigThree.png")
+  );
+  pigForwardTextures.push(
+    await Assets.load("./assets/pigSprites/forwardPigFour.png")
+  );
+  pigBackwardTextures.push(
+    await Assets.load("./assets/pigSprites/backwardPigFour.png")
+  );
+  console.log("pushed pig textures");
 }
 async function setup() {
   await app.init({ backgroundAlpha: 0, width: 800, height: 550 });
@@ -39,17 +395,29 @@ async function setup() {
 }
 
 async function addCows() {
-  const cowTexture = await Assets.load("./assets/cow.png");
+  // const cowForwardTexture = await Assets.load(cowForwardSprites);
+  // const cowBackwardTexture = await Assets.load(cowBackwardSprites);
+  // for (let i = 0; i < cowForwardTexture.length; i++) {
+  //   let texure = PIXI.Texture.from(cowForwardTexture[i]);
+  //   let textureBackward = PIXI.Texture.from(cowBackwardTexture[i]);
+  //   cowForwardTextures.push(texure);
+  //   cowBackwardTextures.push(textureBackward);
+  // }
+  // let AnimatedSprite = new PIXI.AnimatedSprite(cowForwardTextures);
+
   const cowContainer = new Container();
 
   const allCows = allAnimals.filter((animal) => animal.animal.name === "Cow");
 
   for (let i = 0; i < allCows.length; i++) {
-    const cow = new Sprite(cowTexture);
+    const cow = new AnimatedSprite(cowForwardTextures);
+    cow.play();
+    cow.animationSpeed = 0.1;
+    cow.rotation = 0.5;
     cow.id = allCows[i].id;
     cow.on("pointerdown", function () {
-      handleFeedAnimal(cow.id);
-      //adding something for commit
+      handleFeedCow(cow.id);
+      cow.hungerLevel = 0;
     });
 
     app.stage.addChild(cowContainer);
@@ -63,7 +431,16 @@ async function addCows() {
     cow.x = 150;
     cow.y = 200;
 
-    cow.scale.set(0.8 + Math.random() * 0.3);
+    cow.lastFed = new Date().getTime();
+    cow.canFeed = false;
+
+    cow.hungerLevel = 0;
+    cow.previousX = cow.x;
+    cow.previousY = cow.y;
+
+    cow.isFacingTowards = true;
+
+    cow.scale.set(2 + Math.random() * 1.25);
     cowContainer.addChild(cow);
     cows.push(cow);
 
@@ -73,7 +450,7 @@ async function addCows() {
 }
 
 async function addSheep() {
-  const sheepTexture = await Assets.load("./assets/sheep.png");
+  // const sheepTexture = await Assets.load("./assets/sheep.png");
   const sheepContainer = new Container();
 
   const allSheep = allAnimals.filter(
@@ -81,10 +458,13 @@ async function addSheep() {
   );
 
   for (let i = 0; i < allSheep.length; i++) {
-    const sheep = new Sprite(sheepTexture);
+    const sheep = new AnimatedSprite(sheepForwardTextures);
+    sheep.play();
+    sheep.animationSpeed = 0.1;
     sheep.id = allSheep[i].id;
     sheep.on("pointerdown", function () {
-      console.log(sheep.id);
+      handleFeedSheep(sheep.id);
+      sheep.hungerLevel = 0;
     });
 
     app.stage.addChild(sheepContainer);
@@ -94,8 +474,19 @@ async function addSheep() {
     sheep.speed = Math.random();
     sheep.turningSpeed = Math.random() - 0.8;
 
+    sheep.scale.set(2 + Math.random() * 1.25);
+
     sheep.x = 600;
     sheep.y = 400;
+
+    sheep.lastFed = new Date().getTime();
+    sheep.canFeed = false;
+
+    sheep.hungerLevel = 0;
+    sheep.previousX = sheep.x;
+    sheep.previousY = sheep.y;
+
+    sheep.isFacingTowards = true;
 
     sheep.interactive = true;
     sheep.eventMode = "static";
@@ -107,18 +498,20 @@ async function addSheep() {
 }
 
 async function addPigs() {
-  const pigTexture = await Assets.load("./assets/pig.png");
   const pigContainer = new Container();
 
   const allPigs = allAnimals.filter((animal) => animal.animal.name === "Pig");
 
-  console.log(allPigs);
+  // console.log(allPigs);
 
   for (let i = 0; i < allPigs.length; i++) {
-    const pig = new Sprite(pigTexture);
+    const pig = new AnimatedSprite(pigForwardTextures);
+    pig.play();
+    pig.animationSpeed = 0.1;
     pig.id = allPigs[i].id;
     pig.on("pointerdown", function () {
-      console.log(pig.id);
+      handleFeedPig(pig.id);
+      pig.hungerLevel = 0;
     });
 
     app.stage.addChild(pigContainer);
@@ -129,8 +522,20 @@ async function addPigs() {
     pig.speed = Math.random();
     pig.turningSpeed = Math.random() - 0.8;
 
+    pig.scale.set(2 + Math.random() * 1.25);
+
     pig.x = 600;
     pig.y = 200;
+
+    pig.previousX = pig.x;
+    pig.previousY = pig.y;
+
+    pig.lastFed = new Date().getTime();
+    pig.canFeed = false;
+
+    pig.hungerLevel = 0;
+
+    pig.isFacingTowards = true;
 
     pig.interactive = true;
     pig.eventMode = "static";
@@ -141,31 +546,44 @@ async function addPigs() {
   }
 }
 async function addChickens() {
-  const chickenTexture = await Assets.load("./assets/chicken.png");
   const chickenContainer = new Container();
 
   const allChickens = allAnimals.filter(
     (animal) => animal.animal.name === "Chicken"
   );
-  console.log(allChickens);
+  // console.log(allChickens);
   for (let i = 0; i < allChickens.length; i++) {
-    const chicken = new Sprite(chickenTexture);
+    const chicken = new AnimatedSprite(chickenForwardTextures);
+    chicken.play();
+    chicken.animationSpeed = 0.1;
     chicken.id = allChickens[i].id;
     chicken.on("pointerdown", function () {
-      console.log(chicken.id);
+      handleFeedChicken(chicken.id);
+      chicken.hungerLevel = 0;
     });
     app.stage.addChild(chickenContainer);
 
     chicken.anchor.set(0.5);
 
     chicken.direction = Math.random() * Math.PI * 2;
+    // console.log(chicken.direction);
     chicken.speed = Math.random();
     chicken.turningSpeed = Math.random() - 0.8;
 
     chicken.x = 150;
     chicken.y = 400;
 
-    chicken.scale.set(0.8 + Math.random() * 0.3);
+    chicken.previousX = chicken.x;
+    chicken.previousY = chicken.y;
+
+    chicken.lastFed = new Date().getTime();
+    chicken.canFeed = false;
+
+    chicken.hungerLevel = 0;
+
+    chicken.isFacingTowards = true;
+
+    chicken.scale.set(2 + Math.random() * 1.25);
     chickenContainer.addChild(chicken);
 
     chicken.interactive = true;
@@ -177,6 +595,8 @@ async function addChickens() {
 
 function animateCows(app, cows, time) {
   const delta = time.deltaTime;
+  // const fowardTexture = Assets.load("./assets/cowSprites/forwardCowOne.png");
+  // const backwardTexture = Assets.load("./assets/cowSprites/backwardCowOne.png");
 
   const stagePadding = 100;
   const boundWidth = app.screen.width + stagePadding * 2;
@@ -184,9 +604,17 @@ function animateCows(app, cows, time) {
 
   cows.forEach((cow) => {
     cow.direction += cow.turningSpeed * 0.01;
+
+    cow.previousX = cow.x;
+    cow.previousY = cow.y;
+
     cow.x += Math.sin(cow.direction) * cow.speed;
     cow.y += Math.cos(cow.direction) * cow.speed;
     cow.rotation = -cow.direction - Math.PI / 2;
+
+    const previousFacing = cow.isFacingTowards;
+
+    cow.isFacingTowards = cow.y - cow.previousY > 0;
 
     if (cow.x < -stagePadding) {
       cow.x += boundWidth;
@@ -200,6 +628,16 @@ function animateCows(app, cows, time) {
     if (cow.y > boundHeight) {
       cow.y -= boundHeight;
     }
+
+    if (cow.isFacingTowards !== previousFacing) {
+      cow.textures = cow.isFacingTowards
+        ? cowForwardTextures
+        : cowBackwardTextures;
+      cow.gotoAndPlay(0);
+    }
+
+    // cow.play();
+    // console.log(cow.currentFrame);
   });
 }
 
@@ -212,8 +650,17 @@ function animateChickens(app, chickens, time) {
 
   chickens.forEach((chicken) => {
     chicken.direction += chicken.turningSpeed * 0.01;
+
+    chicken.previousX = chicken.x;
+    chicken.previousY = chicken.y;
+
     chicken.x += Math.sin(chicken.direction) * chicken.speed;
     chicken.y += Math.cos(chicken.direction) * chicken.speed;
+
+    const previousFacing = chicken.isFacingTowards;
+
+    chicken.isFacingTowards = chicken.y - chicken.previousY > 0;
+
     chicken.rotation = -chicken.direction - Math.PI / 2;
 
     if (chicken.x < -stagePadding) {
@@ -228,6 +675,14 @@ function animateChickens(app, chickens, time) {
     if (chicken.y > boundHeight) {
       chicken.y -= boundHeight;
     }
+    if (chicken.isFacingTowards !== previousFacing) {
+      chicken.textures = chicken.isFacingTowards
+        ? chickenForwardTextures
+        : chickenBackwardTextures;
+      chicken.gotoAndPlay(0);
+    }
+
+    // console.log(chicken.y);
   });
 }
 
@@ -240,9 +695,23 @@ function animateSheep(app, sheeps, time) {
 
   sheeps.forEach((sheep) => {
     sheep.direction += sheep.turningSpeed * 0.01;
+
+    sheep.previousX = sheep.x;
+    sheep.previousY = sheep.y;
+
     sheep.x += Math.sin(sheep.direction) * sheep.speed;
     sheep.y += Math.cos(sheep.direction) * sheep.speed;
     sheep.rotation = -sheep.direction - Math.PI / 2;
+
+    const previousFacing = sheep.isFacingTowards;
+
+    sheep.isFacingTowards = sheep.y - sheep.previousY > 0;
+
+    // console.log(
+    //   `Sheep is facing towards: ${sheep.isFacingTowards}, ${sheep.x}, ${sheep.y}`
+    // );
+
+    //TODO - add sprite change based on direction
 
     if (sheep.x < -stagePadding) {
       sheep.x += boundWidth;
@@ -256,6 +725,13 @@ function animateSheep(app, sheeps, time) {
     if (sheep.y > boundHeight) {
       sheep.y -= boundHeight;
     }
+
+    if (sheep.isFacingTowards !== previousFacing) {
+      sheep.textures = sheep.isFacingTowards
+        ? sheepForwardTextures
+        : sheepBackwardTextures;
+      sheep.gotoAndPlay(0);
+    }
   });
 }
 
@@ -268,9 +744,15 @@ function animatePigs(app, pigs, time) {
 
   pigs.forEach((pig) => {
     pig.direction += pig.turningSpeed * 0.01;
+
+    pig.previousX = pig.x;
+    pig.previousY = pig.y;
+
     pig.x += Math.sin(pig.direction) * pig.speed;
     pig.y += Math.cos(pig.direction) * pig.speed;
     pig.rotation = -pig.direction - Math.PI / 2;
+    const previousFacing = pig.isFacingTowards;
+    pig.isFacingTowards = pig.y - pig.previousY > 0;
 
     if (pig.x < -stagePadding) {
       pig.x += boundWidth;
@@ -283,6 +765,13 @@ function animatePigs(app, pigs, time) {
     }
     if (pig.y > boundHeight) {
       pig.y -= boundHeight;
+    }
+
+    if (pig.isFacingTowards !== previousFacing) {
+      pig.textures = pig.isFacingTowards
+        ? pigForwardTextures
+        : pigBackwardTextures;
+      pig.gotoAndPlay(0);
     }
   });
 }
@@ -354,4 +843,30 @@ function checkPigCollision(pigs) {
     }
   });
 }
+
+function convertTime() {
+  const date = new Date();
+}
+
 init();
+
+// function checkCowHunger(cows) {}
+
+// function testIntervals() {
+//   console.log("test");
+// }
+
+// function checkForMilk() {
+// if (Math.floor(Math.random() * 10 + 1) >= 5) {
+//   console.log("Milk given, value 10");
+//   console.log("10g added to user gold and sent to server");
+//   //send update to server
+// }
+// }
+/* 
+  if(Math.Random() >= 5){
+    reward given, 
+    send an updated gold value to server based on value of item
+  }
+
+*/

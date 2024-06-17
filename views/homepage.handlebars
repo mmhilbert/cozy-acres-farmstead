@@ -1,6 +1,6 @@
 {{#if farm}}
 <div class="flex justify-center">
-  <img class="w-44 -mt-12" src="/img/barn.png" alt="" />
+  <img class="w-44 barn-img" src="/img/barn.png" alt="" />
 </div>
 
 <div class="farm flex justify-center">
@@ -8,7 +8,8 @@
 </div>
  <div class="flex flex-wrap align-center bg-white px-5 rounded game-stats">
    <div class="w-1/2">
-    <h2>Greetings, {{user.name}}! {{farm.name}}</h2>
+    <h2>Greetings, {{user.name}}!</h2>
+    <p>Farm name: {{farm.name}}</p>
     <p># of Animals: {{farm_animals.length}}</p>
     <p>Gold amount: <span id="current-gold-amount">{{user.current_gold}}</span></p>
   </div> 
@@ -43,24 +44,20 @@
 
 <script src="/js/gameHelpers.js"></script>
 <script src="/js/pixi.min.js"></script>
+
+{{! pulling all animals into global scope }}
 <script>
   const allAnimals = [
   {{#each farm_animals as |farmAnimal|}}
-    {
-      id: {{farmAnimal.id}},
-      name: "{{farmAnimal.name}}",
-      animal: {
-        name: "{{farmAnimal.animal.name}}",
-        product: {
-          name: "{{farmAnimal.animal.product.name}}"
-        }
-      },
-      is_alive: {{farmAnimal.is_alive}},
-      product_ready: {{farmAnimal.product_ready}}
+    { id:
+    {{farmAnimal.id}}, name: "{{farmAnimal.name}}", last_fed:
+    {{dateToTimestamp farmAnimal.last_fed}}, animal: { name: "{{farmAnimal.animal.name}}",
+    product: { name: "{{farmAnimal.animal.product.name}}" } }, is_alive:
+    {{farmAnimal.is_alive}}, product_ready:
+    {{farmAnimal.product_ready}}
     },
   {{/each}}
-  ];
-  console.log(allAnimals);
+  ]; console.log(allAnimals);
 </script>
 <script type="module" src="/js/farmTesting.js"></script>
 {{else}}
