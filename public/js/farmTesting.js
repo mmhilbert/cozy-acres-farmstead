@@ -191,7 +191,7 @@ function checkCanFeedCow() {
     cow.hungerLevel++;
     //checking if cow hunger level is greated than max
     console.log(cow.hungerLevel);
-    if (cow.hungerLevel > 80) {
+    if (cow.hungerLevel > 1000000) {
       // is_alive = false
       handleUnaliveAnimalFetch(cow.id);
       cowsMarkedForDeletion.push(cow.id);
@@ -253,23 +253,23 @@ async function preload() {
   cowForwardTextures.push(
     await Assets.load("./assets/cowSprites/fowardCowOne.png")
   );
-  cowBackwardTextures.push(
-    await Assets.load("./assets/cowSprites/backwardCowOne.png")
-  );
   cowForwardTextures.push(
     await Assets.load("./assets/cowSprites/fowardCowTwo.png")
-  );
-  cowBackwardTextures.push(
-    await Assets.load("./assets/cowSprites/backwardCowTwo.png")
   );
   cowForwardTextures.push(
     await Assets.load("./assets/cowSprites/fowardCowThree.png")
   );
-  cowBackwardTextures.push(
-    await Assets.load("./assets/cowSprites/backwardCowThree.png")
-  );
   cowForwardTextures.push(
     await Assets.load("./assets/cowSprites/fowardCowFour.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowOne.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowTwo.png")
+  );
+  cowBackwardTextures.push(
+    await Assets.load("./assets/cowSprites/backwardCowThree.png")
   );
   cowBackwardTextures.push(
     await Assets.load("./assets/cowSprites/backwardCowFour.png")
@@ -412,7 +412,7 @@ async function addCows() {
 }
 
 async function addSheep() {
-  const sheepTexture = await Assets.load("./assets/sheep.png");
+  // const sheepTexture = await Assets.load("./assets/sheep.png");
   const sheepContainer = new Container();
 
   const allSheep = allAnimals.filter(
@@ -420,7 +420,7 @@ async function addSheep() {
   );
 
   for (let i = 0; i < allSheep.length; i++) {
-    const sheep = new Sprite(sheepTexture);
+    const sheep = new AnimatedSprite(sheepForwardTextures);
     sheep.id = allSheep[i].id;
     sheep.on("pointerdown", function () {
       handleFeedSheep(sheep.id);
@@ -566,6 +566,8 @@ function animateCows(app, cows, time) {
     cow.y += Math.cos(cow.direction) * cow.speed;
     cow.rotation = -cow.direction - Math.PI / 2;
 
+    const previousFacing = cow.isFacingTowards;
+
     cow.isFacingTowards = cow.y - cow.previousY > 0;
 
     //TODO - add sprite change based on direction
@@ -582,11 +584,15 @@ function animateCows(app, cows, time) {
       cow.y -= boundHeight;
     }
 
-    // if (cow.isFacingTowards) {
-    //   cow.texture(cowForwardTextures[0]);
-    // } else {
-    //   cow.texture(cowBackwardTextures[0]);
-    // }
+    if (cow.isFacingTowards !== previousFacing) {
+      cow.textures = cow.isFacingTowards
+        ? cowForwardTextures
+        : cowBackwardTextures;
+      cow.gotoAndPlay(0);
+    }
+
+    // cow.play();
+    // console.log(cow.currentFrame);
   });
 }
 
@@ -656,6 +662,8 @@ function animateSheep(app, sheeps, time) {
     sheep.y += Math.cos(sheep.direction) * sheep.speed;
     sheep.rotation = -sheep.direction - Math.PI / 2;
 
+    const previousFacing = sheep.isFacingTowards;
+
     sheep.isFacingTowards = sheep.y - sheep.previousY > 0;
 
     // console.log(
@@ -675,6 +683,13 @@ function animateSheep(app, sheeps, time) {
     }
     if (sheep.y > boundHeight) {
       sheep.y -= boundHeight;
+    }
+
+    if (sheep.isFacingTowards !== previousFacing) {
+      sheep.textures = sheep.isFacingTowards
+        ? sheepForwardTextures
+        : sheepBackwardTextures;
+      sheep.gotoAndPlay(0);
     }
   });
 }
