@@ -287,6 +287,10 @@ async function addSheep() {
     sheep.x = 600;
     sheep.y = 400;
 
+    sheep.lastFed = new Date().getTime();
+    sheep.canFeed = false;
+
+    sheep.hungerLevel = 0;
     sheep.previousX = sheep.x;
     sheep.previousY = sheep.y;
 
@@ -330,6 +334,11 @@ async function addPigs() {
     pig.previousX = pig.x;
     pig.previousY = pig.y;
 
+    pig.lastFed = new Date().getTime();
+    pig.canFeed = false;
+
+    pig.hungerLevel = 0;
+
     pig.isFacingTowards = true;
 
     pig.interactive = true;
@@ -368,6 +377,11 @@ async function addChickens() {
 
     chicken.previousX = chicken.x;
     chicken.previousY = chicken.y;
+
+    chicken.lastFed = new Date().getTime();
+    chicken.canFeed = false;
+
+    chicken.hungerLevel = 0;
 
     chicken.isFacingTowards = true;
 
