@@ -2,6 +2,7 @@ html,
 body {
   /* height: 1000px; */
   height: 100%;
+  color: #dbcbc8;
 }
 
 body {
@@ -25,6 +26,10 @@ body {
   transform: translateX(calc(50% - 90px));
 }
 
+.barn-img {
+  margin-top: -120px;
+}
+
 .game-stats {
   font-family:cursive;
   font-weight: bold;
@@ -42,12 +47,18 @@ body {
     height: 25%;
 }
 
+.logo2-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
 .logo2 {
-  width: 50%;
-  height: 50%;
-  justify-content: end;
-  padding-top: 2.5%;
+  width: 500px;
+  height: auto;
+  justify-content: center;
   margin-bottom: 5%;
+  padding: 35px;
 }
 
 .store-text {
