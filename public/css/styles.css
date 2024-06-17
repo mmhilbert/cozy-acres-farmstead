@@ -132,22 +132,18 @@ body {
   padding-left: 15px;
 }
 
-.buy-animal0 {
-  background-image: url("../img/buychicken.png");
-}
-
-.buy-animal1 {
+.buy-animal-Cow {
   background-image: url("../img/buycow.png");
 }
 
-.buy-animal2 {
+.buy-animal-Pig {
   background-image: url("../img/buypig.png");
 }
 
-.buy-animal3 {
+.buy-animal-Chicken {
   background-image: url("../img/buychicken.png");
 }
 
-.buy-animal4 {
+.buy-animal-Sheep {
   background-image: url("../img/buysheep.png");
 }

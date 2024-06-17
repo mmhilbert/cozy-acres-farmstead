@@ -7,16 +7,6 @@ backBtn.addEventListener('click', backLogin)
 
 const buyButtons = document.querySelectorAll('.buy-btn')
 
-const animalPic = () => {
-  const buyBtns = document.querySelectorAll('[data-animal-id]')
-  console.log(buyBtns[0].dataset.animalId)
-  let i = 0
-  buyBtns.forEach((buyBtn) => {
-    buyBtn.classList.add('buy-animal' + i)
-    i++
-  })
-}
-
 const buyAnimal = async (e) => {
   e.preventDefault()
   let name = prompt("Please enter your animal's name", "Bessy");
@@ -31,8 +21,9 @@ const buyAnimal = async (e) => {
   })
 
   if (respond.status == 200) {
-    console.log('Added an animal')
-
+    alert(`Added ${name} to your farm`)
+  } else if (respond.status === 400) {
+    alert("You don't have enough gold")
   }
 }
 
