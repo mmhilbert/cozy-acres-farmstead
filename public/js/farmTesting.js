@@ -8,12 +8,213 @@ const {
   DisplacementFilter,
 } = window.PIXI;
 
-const cows = [];
-const chickens = [];
-const sheeps = [];
-const pigs = [];
+let cows = [];
+let chickens = [];
+let sheeps = [];
+let pigs = [];
+let cowsMarkedForDeletion = [];
+let chickensMarkedForDeletion = [];
+let sheepsMarkedForDeletion = [];
+let pigsMarkedForDeletion = [];
 
 const app = new Application();
+
+function handleFeedCow(id) {
+  console.log(id);
+  const cow = cows.find((cow) => cow.id === id);
+  if (cow.canFeed) {
+    handleFeedAnimalFetch(cow.id);
+    console.log(cow);
+    cow.lastFed = new Date().getTime();
+    console.log("Cow fed");
+    cow.canFeed = false;
+  }
+}
+
+function handleFeedChicken(id) {
+  console.log(id);
+  const chicken = chickens.find((chicken) => chicken.id === id);
+  if (chicken.canFeed) {
+    handleFeedAnimalFetch(chicken.id);
+    console.log(chicken);
+    chicken.lastFed = new Date().getTime();
+    console.log("Chicken fed");
+    chicken.canFeed = false;
+  }
+}
+
+function handleFeedSheep(id) {
+  const sheep = sheeps.find((sheep) => sheep.id === id);
+  console.log(id);
+  if (sheep.canFeed) {
+    handleFeedAnimalFetch(sheep.id);
+    console.log(sheep);
+    sheep.lastFed = new Date().getTime();
+    console.log(sheep);
+    console.log("Sheep fed");
+    sheep.canFeed = false;
+  }
+}
+
+function handleFeedPig(id) {
+  const pig = pigs.find((pig) => pig.id === id);
+  console.log(id);
+  if (pig.canFeed) {
+    console.log(pig);
+    handleFeedAnimalFetch(pig.id);
+    console.log(pig);
+    pig.lastFed = new Date().getTime();
+    console.log("Pig fed");
+    pig.canFeed = false;
+  }
+}
+
+function checkCanFeedPig() {
+  const currentTime = new Date().getTime();
+  pigs.forEach((pig) => {
+    //increase hunger level
+    pig.hungerLevel++;
+    //checking if pig hunger level is greated than max
+    if (pig.hungerLevel > 40) {
+      handleUnaliveAnimalFetch(pig.id);
+      pigsMarkedForDeletion.push(pig.id);
+    }
+    // checking if pig can be fed
+    if (currentTime - pig.lastFed > 10000) {
+      pig.canFeed = true;
+    } else {
+      pig.canFeed = false;
+    }
+    console.log(pig.canFeed);
+  });
+  // start te removal process
+  pigsToHeaven();
+}
+
+function checkCanFeedSheep() {
+  const currentTime = new Date().getTime();
+
+  sheeps.forEach((sheep) => {
+    // icrease hunger level
+    sheep.hungerLevel++;
+    // checking if sheep hunger level is greater than max
+    if (sheep.hungerLevel > 40) {
+      handleUnaliveAnimalFetch(sheep.id);
+      sheepsMarkedForDeletion.push(sheep.id);
+    }
+    // checking if sheep can be fed
+    if (currentTime - sheep.lastFed > 10000) {
+      sheep.canFeed = true;
+    } else {
+      sheep.canFeed = false;
+    }
+  });
+  // start the removal process
+  sheepsToHeaven();
+}
+// added for commit
+function sheepsToHeaven() {
+  sheepsMarkedForDeletion.forEach((id) => {
+    sheeps = sheeps.filter((sheep) => {
+      const sheepCanStayAlive = sheep.id !== id;
+      if (!sheepCanStayAlive) {
+        app.stage.removeChild(sheep);
+        sheep.destroy();
+      }
+      return sheepCanStayAlive;
+    });
+  });
+}
+
+function pigsToHeaven() {
+  pigsMarkedForDeletion.forEach((id) => {
+    pigs = pigs.filter((pig) => {
+      const pigCanStayAlive = pig.id !== id;
+      if (!pigCanStayAlive) {
+        app.stage.removeChild(pig);
+        pig.destroy();
+      }
+      return pigCanStayAlive;
+    });
+  });
+}
+
+// function handleHungerLevel() {}
+
+function checkCanFeedChicken() {
+  const currentTime = new Date().getTime();
+  chickens.forEach((chicken) => {
+    // increase hunger level
+    chicken.hungerLevel++;
+    if (chicken.hungerLevel > 20) {
+      handleUnaliveAnimalFetch(chicken.id);
+      chickensMarkedForDeletion.push(chicken.id);
+    }
+    // checking if chicken can be fed,
+    if (currentTime - chicken.lastFed > 10000) {
+      chicken.canFeed = true;
+    } else {
+      chicken.canFeed = false;
+    }
+    // start removal process
+    chickensToHeaven();
+  });
+}
+
+function chickensToHeaven() {
+  chickensMarkedForDeletion.forEach((id) => {
+    chickens = chickens.filter((chicken) => {
+      const chickenCanStayAlive = chicken.id !== id;
+      if (!chickenCanStayAlive) {
+        app.stage.removeChild(chicken);
+        chicken.destroy();
+      }
+      return chickenCanStayAlive;
+    });
+  });
+}
+
+function checkCanFeedCow() {
+  const currentTime = new Date().getTime();
+  cows.forEach((cow) => {
+    //increase hunger level
+    cow.hungerLevel++;
+    //checking if cow hunger level is greated than max
+    console.log(cow.hungerLevel);
+    if (cow.hungerLevel > 80) {
+      // is_alive = false
+      handleUnaliveAnimalFetch(cow.id);
+      cowsMarkedForDeletion.push(cow.id);
+    }
+    // checking if cow can be fed
+    if (currentTime - cow.lastFed > 10000) {
+      cow.canFeed = true;
+    } else {
+      cow.canFeed = false;
+    }
+    console.log(cow.canFeed);
+  });
+  cowsToHeaven();
+}
+function cowsToHeaven() {
+  cowsMarkedForDeletion.forEach((id) => {
+    cows = cows.filter((cow) => {
+      const cowCanStayAlive = cow.id !== id;
+      if (!cowCanStayAlive) {
+        app.stage.removeChild(cow);
+        cow.destroy();
+      }
+      return cowCanStayAlive;
+    });
+  });
+}
+setInterval(() => {
+  // handleHungerLevel();
+  checkCanFeedCow();
+  checkCanFeedChicken();
+  checkCanFeedSheep();
+  checkCanFeedPig();
+}, 1000);
 
 async function init() {
   await setup();
@@ -21,6 +222,7 @@ async function init() {
   addSheep();
   addPigs();
   addChickens();
+  console.log(allAnimals);
 
   app.ticker.add((time) => {
     animateCows(app, cows, time);
@@ -31,6 +233,8 @@ async function init() {
     checkChickenCollision(chickens);
     checkSheepCollision(sheeps);
     checkPigCollision(pigs);
+    // setInterval(testIntervals, 1000);
+    // console.log(time);
   });
 }
 async function setup() {
@@ -48,8 +252,8 @@ async function addCows() {
     const cow = new Sprite(cowTexture);
     cow.id = allCows[i].id;
     cow.on("pointerdown", function () {
-      handleFeedAnimal(cow.id);
-      //adding something for commit
+      handleFeedCow(cow.id);
+      cow.hungerLevel = 0;
     });
 
     app.stage.addChild(cowContainer);
@@ -62,6 +266,15 @@ async function addCows() {
 
     cow.x = 150;
     cow.y = 200;
+
+    cow.lastFed = new Date().getTime();
+    cow.canFeed = false;
+
+    cow.hungerLevel = 0;
+    cow.previousX = cow.x;
+    cow.previousY = cow.y;
+
+    cow.isFacingTowards = true;
 
     cow.scale.set(0.8 + Math.random() * 0.3);
     cowContainer.addChild(cow);
@@ -84,7 +297,8 @@ async function addSheep() {
     const sheep = new Sprite(sheepTexture);
     sheep.id = allSheep[i].id;
     sheep.on("pointerdown", function () {
-      console.log(sheep.id);
+      handleFeedSheep(sheep.id);
+      sheep.hungerLevel = 0;
     });
 
     app.stage.addChild(sheepContainer);
@@ -96,6 +310,15 @@ async function addSheep() {
 
     sheep.x = 600;
     sheep.y = 400;
+
+    sheep.lastFed = new Date().getTime();
+    sheep.canFeed = false;
+
+    sheep.hungerLevel = 0;
+    sheep.previousX = sheep.x;
+    sheep.previousY = sheep.y;
+
+    sheep.isFacingTowards = true;
 
     sheep.interactive = true;
     sheep.eventMode = "static";
@@ -112,13 +335,14 @@ async function addPigs() {
 
   const allPigs = allAnimals.filter((animal) => animal.animal.name === "Pig");
 
-  console.log(allPigs);
+  // console.log(allPigs);
 
   for (let i = 0; i < allPigs.length; i++) {
     const pig = new Sprite(pigTexture);
     pig.id = allPigs[i].id;
     pig.on("pointerdown", function () {
-      console.log(pig.id);
+      handleFeedPig(pig.id);
+      pig.hungerLevel = 0;
     });
 
     app.stage.addChild(pigContainer);
@@ -131,6 +355,16 @@ async function addPigs() {
 
     pig.x = 600;
     pig.y = 200;
+
+    pig.previousX = pig.x;
+    pig.previousY = pig.y;
+
+    pig.lastFed = new Date().getTime();
+    pig.canFeed = false;
+
+    pig.hungerLevel = 0;
+
+    pig.isFacingTowards = true;
 
     pig.interactive = true;
     pig.eventMode = "static";
@@ -147,23 +381,35 @@ async function addChickens() {
   const allChickens = allAnimals.filter(
     (animal) => animal.animal.name === "Chicken"
   );
-  console.log(allChickens);
+  // console.log(allChickens);
   for (let i = 0; i < allChickens.length; i++) {
     const chicken = new Sprite(chickenTexture);
     chicken.id = allChickens[i].id;
     chicken.on("pointerdown", function () {
-      console.log(chicken.id);
+      handleFeedChicken(chicken.id);
+      chicken.hungerLevel = 0;
     });
     app.stage.addChild(chickenContainer);
 
     chicken.anchor.set(0.5);
 
     chicken.direction = Math.random() * Math.PI * 2;
+    // console.log(chicken.direction);
     chicken.speed = Math.random();
     chicken.turningSpeed = Math.random() - 0.8;
 
     chicken.x = 150;
     chicken.y = 400;
+
+    chicken.previousX = chicken.x;
+    chicken.previousY = chicken.y;
+
+    chicken.lastFed = new Date().getTime();
+    chicken.canFeed = false;
+
+    chicken.hungerLevel = 0;
+
+    chicken.isFacingTowards = true;
 
     chicken.scale.set(0.8 + Math.random() * 0.3);
     chickenContainer.addChild(chicken);
@@ -184,10 +430,17 @@ function animateCows(app, cows, time) {
 
   cows.forEach((cow) => {
     cow.direction += cow.turningSpeed * 0.01;
+
+    cow.previousX = cow.x;
+    cow.previousY = cow.y;
+
     cow.x += Math.sin(cow.direction) * cow.speed;
     cow.y += Math.cos(cow.direction) * cow.speed;
     cow.rotation = -cow.direction - Math.PI / 2;
 
+    cow.isFacingTowards = cow.y - cow.previousY > 0;
+
+    //TODO - add sprite change based on direction
     if (cow.x < -stagePadding) {
       cow.x += boundWidth;
     }
@@ -212,10 +465,29 @@ function animateChickens(app, chickens, time) {
 
   chickens.forEach((chicken) => {
     chicken.direction += chicken.turningSpeed * 0.01;
+
+    chicken.previousX = chicken.x;
+    chicken.previousY = chicken.y;
+
+    // if(chicken.y - chicken.previousY > 0) {
+
+    // }
+
     chicken.x += Math.sin(chicken.direction) * chicken.speed;
     chicken.y += Math.cos(chicken.direction) * chicken.speed;
-    chicken.rotation = -chicken.direction - Math.PI / 2;
 
+    chicken.isFacingTowards = chicken.y - chicken.previousY > 0;
+
+    // console.log(
+    //   `Chicken is facing towards: ${chicken.isFacingTowards}, ${chicken.x}, ${chicken.y}`
+    // );
+
+    // console.log(chicken.isFacingTowards, chicken.y - chicken.previousY);
+    // console.log(chicken.direction);
+    chicken.rotation = -chicken.direction - Math.PI / 2;
+    // console.log(chicken.direction);
+
+    //TODO - add sprite change based on direction
     if (chicken.x < -stagePadding) {
       chicken.x += boundWidth;
     }
@@ -228,6 +500,8 @@ function animateChickens(app, chickens, time) {
     if (chicken.y > boundHeight) {
       chicken.y -= boundHeight;
     }
+
+    // console.log(chicken.y);
   });
 }
 
@@ -240,9 +514,21 @@ function animateSheep(app, sheeps, time) {
 
   sheeps.forEach((sheep) => {
     sheep.direction += sheep.turningSpeed * 0.01;
+
+    sheep.previousX = sheep.x;
+    sheep.previousY = sheep.y;
+
     sheep.x += Math.sin(sheep.direction) * sheep.speed;
     sheep.y += Math.cos(sheep.direction) * sheep.speed;
     sheep.rotation = -sheep.direction - Math.PI / 2;
+
+    sheep.isFacingTowards = sheep.y - sheep.previousY > 0;
+
+    // console.log(
+    //   `Sheep is facing towards: ${sheep.isFacingTowards}, ${sheep.x}, ${sheep.y}`
+    // );
+
+    //TODO - add sprite change based on direction
 
     if (sheep.x < -stagePadding) {
       sheep.x += boundWidth;
@@ -268,10 +554,21 @@ function animatePigs(app, pigs, time) {
 
   pigs.forEach((pig) => {
     pig.direction += pig.turningSpeed * 0.01;
+
+    pig.previousX = pig.x;
+    pig.previousY = pig.y;
+
     pig.x += Math.sin(pig.direction) * pig.speed;
     pig.y += Math.cos(pig.direction) * pig.speed;
     pig.rotation = -pig.direction - Math.PI / 2;
 
+    pig.isFacingTowards = pig.y - pig.previousY > 0;
+
+    //TODO - add sprite change based on direction
+
+    // console.log(
+    //   `Pig is facing towards: ${pig.isFacingTowards}, ${pig.x}, ${pig.y}`
+    // );
     if (pig.x < -stagePadding) {
       pig.x += boundWidth;
     }
@@ -354,4 +651,30 @@ function checkPigCollision(pigs) {
     }
   });
 }
+
+function convertTime() {
+  const date = new Date();
+}
+
 init();
+
+// function checkCowHunger(cows) {}
+
+// function testIntervals() {
+//   console.log("test");
+// }
+
+// function checkForMilk() {
+// if (Math.floor(Math.random() * 10 + 1) >= 5) {
+//   console.log("Milk given, value 10");
+//   console.log("10g added to user gold and sent to server");
+//   //send update to server
+// }
+// }
+/* 
+  if(Math.Random() >= 5){
+    reward given, 
+    send an updated gold value to server based on value of item
+  }
+
+*/
